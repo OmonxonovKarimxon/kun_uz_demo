@@ -1,0 +1,34 @@
+POST localhost:8080/region/create
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NzU4NDEsImV4cCI6MTY1NDc3OTQ0MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.DJs2t5mUNX0nN1WMmlBxcjErb7poSuaZtDb-0lcLEPU
+
+{
+  "nameUZ": "jizzax",
+  "nameRU": "JIZZAX",
+  "nameENG": "Jizzakh",
+  "key": "3333"
+
+}
+###
+PUT localhost:8080/region/update
+Content-Type: application/json
+Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NzU4NDEsImV4cCI6MTY1NDc3OTQ0MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.DJs2t5mUNX0nN1WMmlBxcjErb7poSuaZtDb-0lcLEPU
+
+{
+  "id": 1,
+   "nameUZ": "jizzax1",
+  "nameRU": "JIZZAX1",
+  "nameENG": "Jizzakh1"
+}
+###
+GET localhost:8080/region/list
+Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NzU4NDEsImV4cCI6MTY1NDc3OTQ0MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.DJs2t5mUNX0nN1WMmlBxcjErb7poSuaZtDb-0lcLEPU
+
+###
+DELETE localhost:8080/region/delete
+Content-Type: application/json
+Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NzU4NDEsImV4cCI6MTY1NDc3OTQ0MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.DJs2t5mUNX0nN1WMmlBxcjErb7poSuaZtDb-0lcLEPU
+
+{
+  "id": 1
+}

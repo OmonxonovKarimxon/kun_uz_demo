@@ -1,0 +1,8 @@
+POST localhost:8080/auth/login
+Content-Type: application/json
+
+{
+
+  "email": "osk",
+  "password": "1111"
+}

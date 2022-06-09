@@ -1,0 +1,34 @@
+POST localhost:8080/articleType/create
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3ODQwNDMsImV4cCI6MTY1NDc4NzY0MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.7UcudZ1_vgzVoJWWxb7OqoL1SNjYmkDr6p0kFAHJbMI
+
+{
+  "nameUZ": "jizzax",
+  "nameRU": "JIZZAX",
+  "nameENG": "Jizzakh",
+  "key": "3333"
+
+}
+###
+PUT localhost:8080/articleType/update
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3ODQwNDMsImV4cCI6MTY1NDc4NzY0MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.7UcudZ1_vgzVoJWWxb7OqoL1SNjYmkDr6p0kFAHJbMI
+
+{
+  "id": 1,
+   "nameUZ": "jizzax1",
+  "nameRU": "JIZZAX1",
+  "nameENG": "Jizzakh1"
+}
+###
+GET localhost:8080/articleType/list
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3ODQwNDMsImV4cCI6MTY1NDc4NzY0MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.7UcudZ1_vgzVoJWWxb7OqoL1SNjYmkDr6p0kFAHJbMI
+
+###
+DELETE localhost:8080/articleType/delete
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3ODQwNDMsImV4cCI6MTY1NDc4NzY0MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.7UcudZ1_vgzVoJWWxb7OqoL1SNjYmkDr6p0kFAHJbMI
+
+{
+  "id": 1
+}

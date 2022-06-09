@@ -1,0 +1,25 @@
+POST localhost:8080/profile/create
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NTQ0OTMsImV4cCI6MTY1NDc1ODA5MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.Kux9-7KJS06SsKyoVSBf7rqMGyY8g7u8Oqc73iMUUd8
+
+{
+  "name": "jahon",
+  "surname": "qale",
+  "email": "@gmail12",
+  "password": "1111",
+  "role": "PUBLISHER"
+}
+###
+PUT localhost:8080/profile/update
+Content-Type: application/json
+Authorization:  eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NTY4NjIsImV4cCI6MTY1NDc2MDQ2MiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.r8QxeV7kSg3SnggCFr7NOfWQAiqnadToyQm9hH9RRVo
+
+{
+  "id": 1,
+  "name": "jahon",
+  "surname": "qale",
+  "password": "1111"
+}
+###
+GET localhost:8080/profile/list
+Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NTk0NjcsImV4cCI6MTY1NDc2MzA2NywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjozLCJyb2xlIjoiUFVCTElTSEVSIn0.RmlkezDmhOcXwInH1BevhYWZxc_NMlpSYtr1mo-mhDE
