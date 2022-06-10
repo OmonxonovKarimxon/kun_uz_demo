@@ -3,12 +3,12 @@ package com.company.repository;
 import com.company.entity.ProfileEntity;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProfileRepository extends CrudRepository<ProfileEntity, Integer> {
 
-      Optional<ProfileEntity> findByEmailAndPassword(String login, String password);
+    List<ProfileEntity> findAllByVisible(Boolean b);
 
-
-      Optional<ProfileEntity> findByEmail(String login);
+    Optional<ProfileEntity> findByEmail(String email);
 }

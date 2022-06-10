@@ -1,16 +1,16 @@
 package com.company.service;
 
-import com.company.dto.ProfileDto;
+import com.company.dto.ProfileDTO;
 import com.company.entity.ProfileEntity;
-import com.company.enums.ProfileRole;
 import com.company.enums.ProfileStatus;
-import com.company.exception.BadRequestException;
-import com.company.exception.ItemNotFoundException;
+import com.company.exps.AlreadyExist;
+import com.company.exps.AlreadyExistPhone;
+import com.company.exps.BadRequestException;
+import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -20,109 +20,108 @@ public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
 
+    public ProfileDTO create(ProfileDTO profileDto) {
 
-    public ProfileDto create(ProfileDto profileDto) {
-
-        Optional<ProfileEntity> optional = profileRepository.findByEmail(profileDto.getEmail());
-        if (optional.isPresent()) {
-            throw new BadRequestException("User already exists");
+        Optional<ProfileEntity> entity = profileRepository.findByEmail(profileDto.getEmail());
+        if (entity.isPresent()) {
+            throw new AlreadyExistPhone("Already exist phone");
         }
 
-        ProfileEntity entity = new ProfileEntity();
-        entity.setVisible(true);
-        entity.setStatus(ProfileStatus.ACTIVE);
-        entity.setRole(profileDto.getRole());
-        entity.setCreatedDate(LocalDateTime.now());
-        entity.setName(profileDto.getName());
-        entity.setSurname(profileDto.getSurname());
-        entity.setEmail(profileDto.getEmail());
-        entity.setPassword(profileDto.getPassword());
-        profileRepository.save(entity);
+        isValid(profileDto);
 
-        profileDto.setId(entity.getId());
+        ProfileEntity profile = new ProfileEntity();
+        profile.setName(profileDto.getName());
+        profile.setSurname(profileDto.getSurName());
+        profile.setEmail(profileDto.getEmail());
+        profile.setRole(profileDto.getRole());
+        profile.setPassword(profileDto.getPassword());
+        profile.setStatus(ProfileStatus.ACTIVE);
+        profileRepository.save(profile);
+
+        profileDto.setId(profile.getId());
+        profile.setPassword(null);
 
         return profileDto;
     }
 
+    public List<ProfileDTO> getList() {
+        Iterable<ProfileEntity> all = profileRepository.findAllByVisible(true);
+        List<ProfileDTO> dtoList = new LinkedList<>();
+        all.forEach(profileEntity -> {
+            ProfileDTO dto = new ProfileDTO();
+            dto.setId(profileEntity.getId());
+            dto.setName(profileEntity.getName());
+            dto.setSurName(profileEntity.getSurname());
+            dto.setEmail(profileEntity.getEmail());
+            dtoList.add(dto);
+        });
+        return dtoList;
+    }
 
-    public ProfileDto update(ProfileDto profileDto) {
+    public void update(Integer pId, ProfileDTO dto) {
 
-        ProfileEntity entity = isValid(profileDto);
+        Optional<ProfileEntity> profile = profileRepository.findById(pId);
 
-        entity.setName(profileDto.getName());
-        entity.setSurname(profileDto.getSurname());
-        entity.setPassword(profileDto.getPassword());
+        if (profile.isEmpty()) {
+            throw new ItemNotFoundEseption("not found profile");
+        }
+
+        isValidUpdate(dto);
+
+        ProfileEntity entity = profile.get();
+
+        entity.setName(dto.getName());
+        entity.setSurname(dto.getSurName());
+        entity.setEmail(dto.getEmail());
         profileRepository.save(entity);
 
-        profileDto.setId(entity.getId());
-
-        return profileDto;
-
     }
 
 
-    public List<ProfileDto> profileList() {
-        List<ProfileDto> list = new LinkedList<>();
-        for (ProfileEntity entity : profileRepository.findAll()) {
-            ProfileDto dto = new ProfileDto();
-            dto.setId(entity.getId());
-            dto.setEmail(entity.getEmail());
-            dto.setName(entity.getName());
-            dto.setRole(entity.getRole());
-            dto.setStatus(entity.getStatus());
-            dto.setSurname(entity.getSurname());
-            dto.setPassword(entity.getPassword());
-            list.add(dto);
+    public void delete(Integer id) {
+        Optional<ProfileEntity> profile = profileRepository.findById(id);
+        if (profile.isEmpty()) {
+            throw new ItemNotFoundEseption("not found profile");
+        }
+        if (!profile.get().getVisible()) {
+            throw new AlreadyExist("IsVisible False edi");
         }
 
-        return list;
+        profile.get().setVisible(Boolean.FALSE);
+        profileRepository.save(profile.get());
     }
 
+    private void isValidUpdate(ProfileDTO dto) {
 
-    public ProfileDto changeStatus(ProfileDto profileDto) {
-
-        ProfileEntity entity = isValid(profileDto);
-
-        if (entity.getStatus().equals(ProfileStatus.ACTIVE) && !entity.getRole().equals(ProfileRole.ADMIN)) {
-            entity.setStatus(ProfileStatus.BLOCK);
-        } else {
-            entity.setStatus(ProfileStatus.ACTIVE);
+        if (dto.getName() == null || dto.getName().length() < 3) {
+            throw new BadRequestException("wrong name");
         }
-        profileRepository.save(entity);
-        profileDto.setId(entity.getId());
-        return profileDto;
 
-    }
+        if (dto.getSurName() == null || dto.getSurName().length() < 4) {
+            throw new BadRequestException("surname required.");
+        }
 
-
-
-    public ProfileDto delete(ProfileDto profileDto) {
-
-        ProfileEntity entity = isValid(profileDto);
-
-        if (entity.getVisible() && !entity.getRole().equals(ProfileRole.ADMIN)) {
-            entity.setVisible(false);
+        if (dto.getEmail() == null || dto.getEmail().length() < 3) {
+            throw new BadRequestException("email required.");
         }
 
 
-        profileRepository.save(entity);
-
-        profileDto.setId(entity.getId());
-
-        return profileDto;
-
     }
 
+    private void isValid(ProfileDTO dto) {
 
-    public ProfileEntity isValid(ProfileDto dto){
-        Optional<ProfileEntity> optional = profileRepository.findById(dto.getId());
-
-        ProfileEntity entity = optional.get();
-
-        if (!(optional.isPresent() && entity.getVisible())) {
-            throw new ItemNotFoundException("we have not this user");
+        if (dto.getName() == null || dto.getName().length() < 3) {
+            throw new BadRequestException("wrong name");
         }
-        return entity;
-    }
 
+        if (dto.getSurName() == null || dto.getSurName().length() < 4) {
+            throw new BadRequestException("surname required.");
+        }
+
+        if (dto.getEmail() == null || dto.getEmail().length() < 3) {
+            throw new BadRequestException("email required.");
+        }
+
+    }
 }
+

@@ -1,52 +1,59 @@
 package com.company.controller;
 
-import com.company.dto.ProfileDto;
 import com.company.dto.RegionDto;
 import com.company.enums.ProfileRole;
-import com.company.service.RegioneService;
-import com.company.utils.JwtUtil;
+import com.company.service.RegionService;
+import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/region")
+@RestController
 public class RegionController {
     @Autowired
-    private RegioneService regioneService;
+    private RegionService regionService;
 
-    @PostMapping("/create")
-    public ResponseEntity<?> registration(@RequestBody RegionDto dto,
-                                          @RequestHeader("Authorization") String jwt) {
-         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        RegionDto regionDto = regioneService.create(dto);
-        return ResponseEntity.ok(regionDto);
+    // PUBLIC
+    @GetMapping("")
+    public ResponseEntity<List<RegionDto>> getListRegion() {
+        List<RegionDto> list = regionService.getList();
+        return ResponseEntity.ok().body(list);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody RegionDto dto,
-                                          @RequestHeader("Authorization") String jwt) {
+    // SECURE
+    @PostMapping("")
+    public ResponseEntity<?> create(@RequestBody RegionDto regionDto, @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        RegionDto regionDto = regioneService.update(dto);
-        return ResponseEntity.ok(regionDto);
+        regionService.create(regionDto);
+        return ResponseEntity.ok().body("SuccsessFully created");
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestHeader("Authorization") String jwt) {
+    @GetMapping("/admin")
+    public ResponseEntity<List<RegionDto>> getlist(@RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-       List<RegionDto> list = regioneService.regionList();
-        return ResponseEntity.ok(list);
+        List<RegionDto> list = regionService.getListOnlyForAdmin();
+        return ResponseEntity.ok().body(list);
     }
 
-
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestBody RegionDto dto,
-                                          @RequestHeader("Authorization") String jwt) {
+    @PutMapping("/{id}")
+    private ResponseEntity<?> update(@PathVariable("id") Integer id,
+                                     @RequestBody RegionDto dto,
+                                     @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-       String javob =regioneService.delete(dto);
-        return ResponseEntity.ok( ).body(javob);
+        regionService.update(id, dto);
+        return ResponseEntity.ok().body("Succsessfully updated");
     }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> delete(@PathVariable("id") Integer id,
+                                     @RequestHeader("Authorization") String jwt) {
+        JwtUtil.decode(jwt, ProfileRole.ADMIN);
+        regionService.delete(id);
+        return ResponseEntity.ok().body("Successfully deleted");
+    }
+
 
 }

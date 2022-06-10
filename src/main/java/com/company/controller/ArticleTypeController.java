@@ -1,53 +1,66 @@
 package com.company.controller;
 
 import com.company.dto.ArticleTypeDto;
+import com.company.dto.CategoryDto;
 import com.company.dto.RegionDto;
 import com.company.enums.ProfileRole;
 import com.company.service.ArticleTypeService;
-import com.company.utils.JwtUtil;
+import com.company.service.CategoryService;
+import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/article_type")
 @RestController
-@RequestMapping("/articleType")
 public class ArticleTypeController {
     @Autowired
     private ArticleTypeService articleTypeService;
 
-    @PostMapping("/create")
-    public ResponseEntity<?> registration(@RequestBody ArticleTypeDto dto,
-                                          @RequestHeader("Authorization") String jwt) {
-         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        ArticleTypeDto articleTypeDto = articleTypeService.create(dto);
-        return ResponseEntity.ok(articleTypeDto);
+    // PUBLIC
+
+    @GetMapping("/public")
+    public ResponseEntity<List<ArticleTypeDto>> getArticleList() {
+        List<ArticleTypeDto> list = articleTypeService.getList();
+        return ResponseEntity.ok().body(list);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody ArticleTypeDto dto,
-                                    @RequestHeader("Authorization") String jwt) {
+    // SECURED
+
+    @PostMapping("")
+    public ResponseEntity<?> create(@RequestBody ArticleTypeDto articleTypeDto, @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        ArticleTypeDto articleTypeDto = articleTypeService.update(dto);
-        return ResponseEntity.ok(articleTypeDto);
+        articleTypeService.create(articleTypeDto);
+        return ResponseEntity.ok().body("SuccsessFully created");
     }
 
 
-    @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestHeader("Authorization") String jwt) {
+    @GetMapping("")
+    public ResponseEntity<List<ArticleTypeDto>> getlist(@RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-       List<ArticleTypeDto> list = articleTypeService.articleTypeList();
-        return ResponseEntity.ok(list);
+        List<ArticleTypeDto> list = articleTypeService.getListOnlyForAdmin();
+        return ResponseEntity.ok().body(list);
     }
 
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestBody ArticleTypeDto dto,
-                                          @RequestHeader("Authorization") String jwt) {
+    @PutMapping("/{id}")
+    private ResponseEntity<?> update(@PathVariable("id") Integer id,
+                                     @RequestBody RegionDto dto,
+                                     @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-       String javob = articleTypeService.delete(dto);
-        return ResponseEntity.ok( ).body(javob);
+        articleTypeService.update(id, dto);
+        return ResponseEntity.ok().body("Succsessfully updated");
     }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> delete(@PathVariable("id") Integer id,
+                                     @RequestHeader("Authorization") String jwt) {
+        JwtUtil.decode(jwt, ProfileRole.ADMIN);
+        articleTypeService.delete(id);
+        return ResponseEntity.ok().body("Sucsessfully deleted");
+    }
+
 
 }

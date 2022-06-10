@@ -4,49 +4,62 @@ import com.company.dto.CategoryDto;
 import com.company.dto.RegionDto;
 import com.company.enums.ProfileRole;
 import com.company.service.CategoryService;
-import com.company.utils.JwtUtil;
+import com.company.service.RegionService;
+import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequestMapping("/category")
+@RestController
 public class CategoryController {
+
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping("/create")
-    public ResponseEntity<?> registration(@RequestBody CategoryDto dto,
-                                          @RequestHeader("Authorization") String jwt) {
-         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        CategoryDto regionDto = categoryService.create(dto);
-        return ResponseEntity.ok(regionDto);
+
+    // PUBLIC
+    @GetMapping("")
+    public ResponseEntity<List<CategoryDto>> getListCategory() {
+        List<CategoryDto> list = categoryService.getList();
+        return ResponseEntity.ok().body(list);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody CategoryDto dto,
-                                          @RequestHeader("Authorization") String jwt) {
+    // SECURED
+    @PostMapping("")
+    public ResponseEntity<?> create(@RequestBody CategoryDto categoryDto,
+                                    @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        CategoryDto regionDto = categoryService.update(dto);
-        return ResponseEntity.ok(regionDto);
+        categoryService.create(categoryDto);
+        return ResponseEntity.ok().body("SuccsessFully created");
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestHeader("Authorization") String jwt) {
+    @GetMapping("/admin")
+    public ResponseEntity<List<CategoryDto>> getList(@RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-       List<CategoryDto> list = categoryService.categoryList();
-        return ResponseEntity.ok(list);
+        List<CategoryDto> list = categoryService.getListOnlyForAdmin();
+        return ResponseEntity.ok().body(list);
     }
 
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<?> delete(@RequestBody CategoryDto dto,
-                                          @RequestHeader("Authorization") String jwt) {
+    @PutMapping("/{id}")
+    private ResponseEntity<?> update(@PathVariable("id") Integer id,
+                                     @RequestBody CategoryDto dto,
+                                     @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-       String javob = categoryService.delete(dto);
-        return ResponseEntity.ok( ).body(javob);
+        categoryService.update(id, dto);
+        return ResponseEntity.ok().body("Succsessfully updated");
     }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> delete(@PathVariable("id") Integer id,
+                                     @RequestHeader("Authorization") String jwt) {
+        JwtUtil.decode(jwt, ProfileRole.ADMIN);
+        categoryService.delete(id);
+        return ResponseEntity.ok().body("Sucsessfully deleted");
+    }
+
 
 }

@@ -4,13 +4,14 @@ import com.company.dto.CategoryDto;
 import com.company.dto.RegionDto;
 import com.company.entity.CategoryEntity;
 import com.company.entity.RegionEntity;
-import com.company.exception.BadRequestException;
-import com.company.exception.ItemNotFoundException;
+import com.company.exps.AlreadyExist;
+import com.company.exps.BadRequestException;
+import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.CategoryRepository;
+import com.company.repository.RegionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -20,93 +21,105 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    public void create(CategoryDto categoryDto) {
 
-    public CategoryDto create(CategoryDto catigoryDto) {
+        Optional<CategoryEntity> category = categoryRepository.findByKey(categoryDto.getKey());
 
-        Optional<CategoryEntity> optional = categoryRepository.findByKey(catigoryDto.getKey());
-
-        if (optional.isPresent()) {
-            throw new BadRequestException("region already exists");
+        if (category.isPresent()) {
+            throw new AlreadyExist("Already exist");
         }
+
+        isValid(categoryDto);
 
         CategoryEntity entity = new CategoryEntity();
-        entity.setCreatedDate(LocalDateTime.now());
-        entity.setKey(catigoryDto.getKey());
-        entity.setNameEng(catigoryDto.getNameENG());
-        entity.setNameRu(catigoryDto.getNameRU());
-        entity.setNameUz(catigoryDto.getNameUZ());
-        entity.setVisible(true);
+        entity.setKey(categoryDto.getKey());
+        entity.setNameUz(categoryDto.getNameUz());
+        entity.setNameRu(categoryDto.getNameRu());
+        entity.setNameEn(categoryDto.getNameEn());
 
         categoryRepository.save(entity);
-
-        catigoryDto.setId(entity.getId());
-
-        return catigoryDto;
     }
 
+    public List<CategoryDto> getList() {
 
-    public CategoryDto update(CategoryDto categoryDto) {
+        Iterable<CategoryEntity> all = categoryRepository.findAllByVisible(true);
+        List<CategoryDto> dtoList = new LinkedList<>();
 
-        CategoryEntity entity = isValid(categoryDto);
-
-
-        entity.setNameEng(categoryDto.getNameENG());
-        entity.setNameRu(categoryDto.getNameRU());
-        entity.setNameUz(categoryDto.getNameUZ());
-
-        categoryRepository.save(entity);
-
-        categoryDto.setId(entity.getId());
-
-        return categoryDto;
-
+        all.forEach(categoryEntity -> {
+            dtoList.add(toDTO(categoryEntity));
+        });
+        return dtoList;
     }
 
+    public List<CategoryDto> getListOnlyForAdmin() {
 
-    public List<CategoryDto> categoryList() {
-        List<CategoryDto> list = new LinkedList<>();
-        for (CategoryEntity entity : categoryRepository.findAll()) {
-            CategoryDto dto = new CategoryDto();
-            dto.setId(entity.getId());
-            dto.setKey(entity.getKey());
-            dto.setNameENG(entity.getNameEng());
-            dto.setNameRU(entity.getNameRu());
-            dto.setNameUZ(entity.getNameUz());
+        Iterable<CategoryEntity> all = categoryRepository.findAll();
+        List<CategoryDto> dtoList = new LinkedList<>();
 
-            list.add(dto);
+        all.forEach(categoryEntity -> {
+            dtoList.add(toDTO(categoryEntity));
+        });
+        return dtoList;
+    }
+
+    public void update(Integer id, CategoryDto dto) {
+        Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
+
+        if (categoryEntity.isEmpty()) {
+            throw new ItemNotFoundEseption("not found category");
         }
 
-        return list;
+        CategoryEntity entity = categoryEntity.get();
+        entity.setKey(dto.getKey());
+        entity.setNameUz(dto.getNameUz());
+        entity.setNameRu(dto.getNameRu());
+        entity.setNameEn(dto.getNameEn());
+        categoryRepository.save(entity);
     }
 
+    public void delete(Integer id) {
 
-    public String delete(CategoryDto dto) {
+        Optional<CategoryEntity> entity = categoryRepository.findById(id);
 
-        CategoryEntity entity = isValid(dto);
-
-        if (entity.getVisible()) {
-            entity.setVisible(false);
+        if (entity.isEmpty()) {
+            throw new ItemNotFoundEseption("not found category");
         }
 
+        if (entity.get().getVisible().equals(Boolean.FALSE)) {
+            throw new AlreadyExist("this category already visible false");
+        }
 
-        categoryRepository.save(entity);
+        CategoryEntity category = entity.get();
+        category.setVisible(Boolean.FALSE);
+        categoryRepository.save(category);
+    }
 
+    public CategoryDto toDTO(CategoryEntity entity) {
+        CategoryDto dto = new CategoryDto();
         dto.setId(entity.getId());
-        return "succesfully deleted";
+        dto.setKey(entity.getKey());
+        dto.setNameUz(entity.getNameUz());
+        dto.setNameRu(entity.getNameRu());
+        dto.setNameEn(entity.getNameEn());
+        return dto;
     }
 
-
-    public CategoryEntity isValid(CategoryDto dto) {
-        Optional<CategoryEntity> optional = categoryRepository.findById(dto.getId());
-
-        CategoryEntity entity = optional.get();
-
-        if (optional.isEmpty()) {
-
-            throw new ItemNotFoundException("we have not this region");
-
+    private void isValid(CategoryDto dto) {
+        if (dto.getKey().length() < 5) {
+            throw new BadRequestException("key to short");
         }
-        return entity;
+
+        if (dto.getNameUz() == null || dto.getNameUz().length() < 3) {
+            throw new BadRequestException("wrong name uz");
+        }
+
+        if (dto.getNameRu() == null || dto.getNameRu().length() < 3) {
+            throw new BadRequestException("wrong name ru");
+        }
+
+        if (dto.getNameEn() == null || dto.getNameEn().length() < 3) {
+            throw new BadRequestException("wrong name en");
+        }
     }
 
 }

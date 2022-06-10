@@ -7,13 +7,9 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CategoryDto {
     private Integer id;
-    private String nameUZ;
-    private String nameRU;
-    private String nameENG;
     private String key;
-
-
-
-
+    private String nameUz;
+    private String nameRu;
+    private String nameEn;
 
 }

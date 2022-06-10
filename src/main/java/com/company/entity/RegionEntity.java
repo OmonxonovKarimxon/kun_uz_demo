@@ -1,37 +1,37 @@
 package com.company.entity;
 
-import com.company.enums.ProfileRole;
-import com.company.enums.ProfileStatus;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Setter
 @Getter
+@Entity
+@Table(name = "region")
 public class RegionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private LocalDateTime createdDate;
-
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String key;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "name_uz")
     private String nameUz;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "name_ru")
     private String nameRu;
 
-    @Column(nullable = false)
-    private String nameEng;
+    @Column(nullable = false, name = "name_en")
+    private String nameEn;
 
     @Column(nullable = false)
-    private Boolean visible;
+    private Boolean visible = Boolean.TRUE;
+
+
+    @Column(nullable = false, name = "created_date")
+    private LocalDateTime createdDate = LocalDateTime.now();
+
 
 }

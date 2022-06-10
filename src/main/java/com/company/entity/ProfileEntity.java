@@ -1,35 +1,30 @@
 package com.company.entity;
 
+
 import com.company.enums.ProfileRole;
 import com.company.enums.ProfileStatus;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Setter
 @Getter
+@Entity
+@Table(name = "profile")
 public class ProfileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
-    private LocalDateTime createdDate;
-
-    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    private String Surname;
+    private String surname;
 
     @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
-    private String password;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -40,6 +35,12 @@ public class ProfileEntity {
     private ProfileRole role;
 
     @Column(nullable = false)
-    private Boolean visible;
+    private Boolean visible = Boolean.TRUE;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, name = "created_date")
+    private LocalDateTime createdDate = LocalDateTime.now();
 
 }
