@@ -1,14 +1,12 @@
 package com.company.service;
 
-import com.company.dto.CategoryDto;
-import com.company.dto.RegionDto;
+import com.company.dto.CategoryDTO;
 import com.company.entity.CategoryEntity;
 import com.company.entity.RegionEntity;
 import com.company.exps.AlreadyExist;
 import com.company.exps.BadRequestException;
 import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.CategoryRepository;
-import com.company.repository.RegionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +19,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public void create(CategoryDto categoryDto) {
+    public void create(CategoryDTO categoryDto) {
 
         Optional<CategoryEntity> category = categoryRepository.findByKey(categoryDto.getKey());
 
@@ -40,10 +38,10 @@ public class CategoryService {
         categoryRepository.save(entity);
     }
 
-    public List<CategoryDto> getList() {
+    public List<CategoryDTO> getList() {
 
         Iterable<CategoryEntity> all = categoryRepository.findAllByVisible(true);
-        List<CategoryDto> dtoList = new LinkedList<>();
+        List<CategoryDTO> dtoList = new LinkedList<>();
 
         all.forEach(categoryEntity -> {
             dtoList.add(toDTO(categoryEntity));
@@ -51,10 +49,10 @@ public class CategoryService {
         return dtoList;
     }
 
-    public List<CategoryDto> getListOnlyForAdmin() {
+    public List<CategoryDTO> getListOnlyForAdmin() {
 
         Iterable<CategoryEntity> all = categoryRepository.findAll();
-        List<CategoryDto> dtoList = new LinkedList<>();
+        List<CategoryDTO> dtoList = new LinkedList<>();
 
         all.forEach(categoryEntity -> {
             dtoList.add(toDTO(categoryEntity));
@@ -62,7 +60,7 @@ public class CategoryService {
         return dtoList;
     }
 
-    public void update(Integer id, CategoryDto dto) {
+    public void update(Integer id, CategoryDTO dto) {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
 
         if (categoryEntity.isEmpty()) {
@@ -94,8 +92,14 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public CategoryDto toDTO(CategoryEntity entity) {
-        CategoryDto dto = new CategoryDto();
+    public CategoryEntity get(Integer id) {
+        return categoryRepository.findById(id).orElseThrow(() -> {
+            throw new ItemNotFoundEseption("Region not found");
+        });
+    }
+
+    public CategoryDTO toDTO(CategoryEntity entity) {
+        CategoryDTO dto = new CategoryDTO();
         dto.setId(entity.getId());
         dto.setKey(entity.getKey());
         dto.setNameUz(entity.getNameUz());
@@ -104,7 +108,7 @@ public class CategoryService {
         return dto;
     }
 
-    private void isValid(CategoryDto dto) {
+    private void isValid(CategoryDTO dto) {
         if (dto.getKey().length() < 5) {
             throw new BadRequestException("key to short");
         }

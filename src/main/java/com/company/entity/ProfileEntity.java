@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -42,5 +43,8 @@ public class ProfileEntity {
 
     @Column(nullable = false, name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "moderator")
+    private List<ArticleEntity> articleList;
 
 }

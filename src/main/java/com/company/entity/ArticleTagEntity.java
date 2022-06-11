@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "article_type")
-public class ArticleTypeEntity {
+@Table(name = "article_tag")
+public class ArticleTagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,8 +18,7 @@ public class ArticleTypeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ArticleEntity article;
 
-    @JoinColumn(name = "types_id")
+    @JoinColumn(name = "tag_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private TypesEntity types;
-
+    private TagEntity tag;
 }

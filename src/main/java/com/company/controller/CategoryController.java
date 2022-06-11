@@ -1,10 +1,8 @@
 package com.company.controller;
 
-import com.company.dto.CategoryDto;
-import com.company.dto.RegionDto;
+import com.company.dto.CategoryDTO;
 import com.company.enums.ProfileRole;
 import com.company.service.CategoryService;
-import com.company.service.RegionService;
 import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +20,14 @@ public class CategoryController {
 
     // PUBLIC
     @GetMapping("")
-    public ResponseEntity<List<CategoryDto>> getListCategory() {
-        List<CategoryDto> list = categoryService.getList();
+    public ResponseEntity<List<CategoryDTO>> getListCategory() {
+        List<CategoryDTO> list = categoryService.getList();
         return ResponseEntity.ok().body(list);
     }
 
     // SECURED
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody CategoryDto categoryDto,
+    public ResponseEntity<?> create(@RequestBody CategoryDTO categoryDto,
                                     @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
         categoryService.create(categoryDto);
@@ -37,16 +35,16 @@ public class CategoryController {
     }
 
     @GetMapping("/admin")
-    public ResponseEntity<List<CategoryDto>> getList(@RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<List<CategoryDTO>> getList(@RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        List<CategoryDto> list = categoryService.getListOnlyForAdmin();
+        List<CategoryDTO> list = categoryService.getListOnlyForAdmin();
         return ResponseEntity.ok().body(list);
     }
 
 
     @PutMapping("/{id}")
     private ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                     @RequestBody CategoryDto dto,
+                                     @RequestBody CategoryDTO dto,
                                      @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
         categoryService.update(id, dto);

@@ -71,6 +71,12 @@ public class RegionService {
         return dtoList;
     }
 
+    public RegionEntity get(Integer id) {
+        return regionRepository.findById(id).orElseThrow(() -> {
+            throw new ItemNotFoundEseption("Region not found");
+        });
+    }
+
     public List<RegionDto> getListOnlyForAdmin() {
 
         Iterable<RegionEntity> all = regionRepository.findAll();

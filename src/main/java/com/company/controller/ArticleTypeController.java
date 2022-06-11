@@ -1,11 +1,9 @@
 package com.company.controller;
 
-import com.company.dto.ArticleTypeDto;
-import com.company.dto.CategoryDto;
+import com.company.dto.article.ArticleTypeDTO;
 import com.company.dto.RegionDto;
 import com.company.enums.ProfileRole;
-import com.company.service.ArticleTypeService;
-import com.company.service.CategoryService;
+import com.company.service.TypesService;
 import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,30 +15,30 @@ import java.util.List;
 @RestController
 public class ArticleTypeController {
     @Autowired
-    private ArticleTypeService articleTypeService;
+    private TypesService typesService;
 
     // PUBLIC
 
     @GetMapping("/public")
-    public ResponseEntity<List<ArticleTypeDto>> getArticleList() {
-        List<ArticleTypeDto> list = articleTypeService.getList();
+    public ResponseEntity<List<ArticleTypeDTO>> getArticleList() {
+        List<ArticleTypeDTO> list = typesService.getList();
         return ResponseEntity.ok().body(list);
     }
 
     // SECURED
 
     @PostMapping("")
-    public ResponseEntity<?> create(@RequestBody ArticleTypeDto articleTypeDto, @RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<?> create(@RequestBody ArticleTypeDTO articleTypeDto, @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        articleTypeService.create(articleTypeDto);
+        typesService.create(articleTypeDto);
         return ResponseEntity.ok().body("SuccsessFully created");
     }
 
 
     @GetMapping("")
-    public ResponseEntity<List<ArticleTypeDto>> getlist(@RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<List<ArticleTypeDTO>> getlist(@RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        List<ArticleTypeDto> list = articleTypeService.getListOnlyForAdmin();
+        List<ArticleTypeDTO> list = typesService.getListOnlyForAdmin();
         return ResponseEntity.ok().body(list);
     }
 
@@ -50,7 +48,7 @@ public class ArticleTypeController {
                                      @RequestBody RegionDto dto,
                                      @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        articleTypeService.update(id, dto);
+        typesService.update(id, dto);
         return ResponseEntity.ok().body("Succsessfully updated");
     }
 
@@ -58,7 +56,7 @@ public class ArticleTypeController {
     private ResponseEntity<?> delete(@PathVariable("id") Integer id,
                                      @RequestHeader("Authorization") String jwt) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        articleTypeService.delete(id);
+        typesService.delete(id);
         return ResponseEntity.ok().body("Sucsessfully deleted");
     }
 
