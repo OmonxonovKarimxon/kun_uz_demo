@@ -67,10 +67,11 @@ public class ArticleController {
         String javob = articleService.delete(dto, profileId);
         return ResponseEntity.ok().body(javob);
     }
+
     @PutMapping("/like")
     public ResponseEntity<?> like(@RequestBody ArticleDTO dto,
                                     @RequestHeader("Authorization") String jwt) {
-        Integer profileId = JwtUtil.decode(jwt, ProfileRole.USER);
+        Integer profileId = JwtUtil.decode(jwt);
         ArticleDTO articleDTO = articleService.like(dto, profileId);
         return ResponseEntity.ok().body(articleDTO);
     }

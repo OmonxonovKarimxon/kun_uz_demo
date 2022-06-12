@@ -1,0 +1,14 @@
+GET localhost:8080/sort/list
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###
+GET localhost:8080/sort/typeList
+Content-Type: application/json
+
+{
+  "id": 1
+}

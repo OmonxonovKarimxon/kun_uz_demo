@@ -94,7 +94,7 @@ public class CategoryService {
 
     public CategoryEntity get(Integer id) {
         return categoryRepository.findById(id).orElseThrow(() -> {
-            throw new ItemNotFoundEseption("Region not found");
+            throw new ItemNotFoundEseption("category not found");
         });
     }
 

@@ -4,6 +4,7 @@ import com.company.dto.article.ArticleCreateDTO;
 import com.company.dto.article.ArticleDTO;
 import com.company.entity.*;
 import com.company.enums.ArticleStatus;
+import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.ArticleRepository;
 import com.company.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,11 @@ public class ArticleService {
 
         ArticleEntity entity = optional.get();
 
+        if (entity == null) {
+
+            throw new ItemNotFoundEseption("article not found");
+        }
+
         entity.setContent(dto.getContent());
 
         entity.setDescription(dto.getDescription());
@@ -101,6 +107,12 @@ public class ArticleService {
 
     public List<ArticleDTO> articleList() {
         Iterable<ArticleEntity> list = articleRepository.findByPublishDateIsNotNull();
+
+        if (list == null) {
+
+            throw new ItemNotFoundEseption("article not found");
+        }
+
         List<ArticleDTO> dtoList = new LinkedList<>();
         for (ArticleEntity entity : list) {
             ArticleDTO dto = new ArticleDTO();
@@ -130,6 +142,12 @@ public class ArticleService {
         Optional<ArticleEntity> optional = articleRepository.getById(dto.getId());
 
         ArticleEntity entity = optional.get();
+
+        if (entity == null) {
+
+            throw new ItemNotFoundEseption("article not found");
+        }
+
         entity.setVisible(false);
 
         articleRepository.save(entity);
@@ -142,28 +160,19 @@ public class ArticleService {
 
         Optional<ArticleEntity> optional = articleRepository.getByStatusAndId(ArticleStatus.PUBLISHED, articleDTO.getId());
 
-        ArticleEntity entity = optional.get();
-        entity.setViewCount(entity.getViewCount() + 1);
 
+        if (optional.isEmpty()) {
+
+            throw new ItemNotFoundEseption("article not found");
+        }
+
+        ArticleEntity entity = optional.get();
+
+        entity.setViewCount(entity.getViewCount() + 1);
         articleRepository.save(entity);
 
-        ArticleDTO dto = new ArticleDTO();
-        dto.setTitle(entity.getTitle());
-        dto.setDescription(entity.getDescription());
-        dto.setContent(entity.getContent());
-        dto.setId(entity.getId());
-        dto.setRegionId(entity.getRegion().getId());
-        dto.setCategoryId(entity.getCategory().getId());
-        dto.setViewCount(entity.getViewCount());
-        dto.setLikeCount(entity.getLikeCount());
 
-        List<Integer> typeList = articleTypeService.getTypeList(entity);
-        dto.setTypesList(typeList);
-
-        List<String> tagList = articleTagService.getTagList(entity);
-        dto.setTagList(tagList);
-
-        return dto;
+        return  entityToDto(entity);
 
     }
 
@@ -186,33 +195,49 @@ public class ArticleService {
         Optional<ArticleEntity> articleOptional = articleRepository.getByStatusAndId(ArticleStatus.PUBLISHED, articleDTO.getId());
         Optional<ProfileEntity> userOptional = profileRepository.findById(profileId);
 
+        if (articleOptional.isEmpty() || userOptional.isEmpty()) {
 
-
+            throw new ItemNotFoundEseption("article or profile not found");
+        }
 
         ArticleEntity article = articleOptional.get();
         ProfileEntity profile = userOptional.get();
+
+
         article.setLikeCount(article.getLikeCount() + 1);
 
-        articleLikeService.create(article,profile);
+
+        articleLikeService.create(article, profile);
 
         articleRepository.save(article);
 
+        return entityToDto(article);
+
+
+    }
+
+    public ArticleEntity getArticle(String articleId) {
+        return articleRepository.getById(articleId).get();
+    }
+
+    private ArticleDTO entityToDto(ArticleEntity entity) {
+
+
         ArticleDTO dto = new ArticleDTO();
-        dto.setTitle(article.getTitle());
-        dto.setDescription(article.getDescription());
-        dto.setContent(article.getContent());
-        dto.setId(article.getId());
-        dto.setRegionId(article.getRegion().getId());
-        dto.setCategoryId(article.getCategory().getId());
-        dto.setViewCount(article.getViewCount());
-        dto.setLikeCount(article.getLikeCount());
-        List<Integer> typeList = articleTypeService.getTypeList(article);
+        dto.setTitle(entity.getTitle());
+        dto.setDescription(entity.getDescription());
+        dto.setContent(entity.getContent());
+        dto.setId(entity.getId());
+        dto.setRegionId(entity.getRegion().getId());
+        dto.setCategoryId(entity.getCategory().getId());
+        dto.setViewCount(entity.getViewCount());
+        dto.setLikeCount(entity.getLikeCount());
+
+        List<Integer> typeList = articleTypeService.getTypeList(entity);
         dto.setTypesList(typeList);
 
-        List<String> tagList = articleTagService.getTagList(article);
+        List<String> tagList = articleTagService.getTagList(entity);
         dto.setTagList(tagList);
-
         return dto;
-
     }
 }

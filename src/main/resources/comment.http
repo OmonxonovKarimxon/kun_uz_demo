@@ -1,0 +1,30 @@
+POST localhost:8080/comment/
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMjkwNzMsImV4cCI6MTY1NTAzMjY3MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo1LCJyb2xlIjoiVVNFUiJ9.xoRuNWpO8sfTTkgE7CIu40R5nKaJm7RzYwzjlWb1H-g
+
+{
+"content": "qalesiz ozizcha yaxshi ish qildingizda aa",
+  "articleId":1
+
+}
+
+###
+
+PUT localhost:8080/comment/
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMzA1ODMsImV4cCI6MTY1NTAzNDE4MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiTU9ERVJBVE9SIn0.XKDPa-VkTKdbe-BPn42IMiBOM1Ou1zRQyxV4ObEexjE
+
+{
+"content": "kjjqeve liqur",
+"articleId":1,
+  "id": 1
+}
+
+###
+PUT localhost:8080/comment/list
+Content-Type: application/json
+
+{
+  "articleId": 1,
+  "id": 1
+}

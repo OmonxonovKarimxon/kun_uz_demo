@@ -9,6 +9,7 @@ import com.company.repository.ArticleTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -30,19 +31,22 @@ public class ArticleTypeService {
     }
 
     public List<Integer> getTypeList(ArticleEntity articleEntity) {
-
         List<ArticleTypeEntity> typesList = articleTypeRepository.findByArticle(articleEntity);
         List<Integer> idList = new LinkedList<>();
-
         for (ArticleTypeEntity entity : typesList) {
             Integer id = entity.getTypes().getId();
-
             idList.add(id);
-
-
         }
-
         return idList;
+    }
+
+    public List<ArticleEntity> sortByType(TypesEntity typesEntity) {
+        List<ArticleTypeEntity> articleTypeEntityList = articleTypeRepository.findByTypes(typesEntity);
+        List<ArticleEntity> list = new ArrayList<>();
+        for (ArticleTypeEntity entity : articleTypeEntityList) {
+            list.add(entity.getArticle());
+        }
+        return list;
     }
 
 }

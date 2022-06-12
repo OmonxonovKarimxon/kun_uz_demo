@@ -39,6 +39,7 @@ public class TypesService {
 
         typesRepository.save(entity);
     }
+
     private void isValid(TypesDTO dto) {
         if (dto.getKey().length() < 5) {
             throw new BadRequestException("key to short");
@@ -72,6 +73,7 @@ public class TypesService {
         });
         return dtoList;
     }
+
     public List<TypesDTO> getListOnlyForAdmin() {
 
         Iterable<TypesEntity> all = typesRepository.findAll();
@@ -121,5 +123,13 @@ public class TypesService {
         articleType.setVisible(Boolean.FALSE);
 
         typesRepository.save(articleType);
+    }
+
+    public TypesEntity getType(Integer typeId) {
+        Optional<TypesEntity> entity = typesRepository.findById(typeId);
+        if (entity.isEmpty()){
+            throw new ItemNotFoundEseption("this type is not");
+        }
+        return entity.get();
     }
 }

@@ -123,5 +123,9 @@ public class ProfileService {
         }
 
     }
+
+    public ProfileEntity getProfile(Integer profileId){
+    return   profileRepository.findById(profileId).get();
+    }
 }
 
