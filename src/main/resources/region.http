@@ -1,12 +1,12 @@
-POST localhost:8080/region/create
+POST localhost:8080/region/
 Content-Type: application/json
-Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NzU4NDEsImV4cCI6MTY1NDc3OTQ0MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.DJs2t5mUNX0nN1WMmlBxcjErb7poSuaZtDb-0lcLEPU
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ5NDIxNzEsImV4cCI6MTY1NDk0NTc3MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.a4wlEP7U1BwNN0PYr9Ui4UhGgFO-BlebR6fy1xJn1AU
 
 {
-  "nameUZ": "jizzax",
-  "nameRU": "JIZZAX",
-  "nameENG": "Jizzakh",
-  "key": "3333"
+  "nameUz": "jizzax",
+  "nameRu": "JIZZAX",
+  "nameEn": "Jizzakh",
+  "key": "assalomu alaykum"
 
 }
 ###

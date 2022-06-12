@@ -34,7 +34,7 @@ public class AuthService {
 
         ProfileDTO dto = new ProfileDTO();
         dto.setName(profile.getName());
-        dto.setSurName(profile.getSurname());
+        dto.setSurname(profile.getSurname());
         dto.setJwt(JwtUtil.encode(profile.getId(), profile.getRole()));
 
         return dto;
@@ -56,7 +56,7 @@ public class AuthService {
 
         ProfileDTO responseDTO = new ProfileDTO();
         responseDTO.setName(dto.getName());
-        responseDTO.setSurName(dto.getSurname());
+        responseDTO.setSurname(dto.getSurname());
         responseDTO.setEmail(dto.getEmail());
         responseDTO.setJwt(JwtUtil.encode(entity.getId(), entity.getRole()));
         return responseDTO;

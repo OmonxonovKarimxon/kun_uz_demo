@@ -10,19 +10,26 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "tag")
-public class TagEntity {
+@Table(name = "comment")
+public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
-    private String name;
+    private String content;
 
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TagStatus status = TagStatus.ACTIVE;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id")
+    private ProfileEntity profile;
+
+    @JoinColumn(name = "article_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ArticleEntity article;
+
+    @Column(nullable = false)
+    private Boolean visible = Boolean.TRUE;
 
 
     @Column(name = "created_date", nullable = false)

@@ -1,6 +1,6 @@
 package com.company.service;
 
-import com.company.dto.article.ArticleTypeDTO;
+import com.company.dto.article.TypesDTO;
 import com.company.dto.RegionDto;
 import com.company.entity.TypesEntity;
 import com.company.exps.AlreadyExist;
@@ -20,26 +20,26 @@ public class TypesService {
     @Autowired
     private TypesRepository typesRepository;
 
-    public void create(ArticleTypeDTO articleTypeDto) {
+    public void create(TypesDTO typesDto) {
 
-        Optional<TypesEntity> articleTypeEntity = typesRepository.findByKey(articleTypeDto.getKey());
+        Optional<TypesEntity> articleTypeEntity = typesRepository.findByKey(typesDto.getKey());
 
         if (articleTypeEntity.isPresent()) {
             throw new AlreadyExist("Already exist");
         }
 
-        isValid(articleTypeDto);
+        isValid(typesDto);
 
 
         TypesEntity entity = new TypesEntity();
-        entity.setKey(articleTypeDto.getKey());
-        entity.setNameUz(articleTypeDto.getNameUz());
-        entity.setNameRu(articleTypeDto.getNameRu());
-        entity.setNameEn(articleTypeDto.getNameEn());
+        entity.setKey(typesDto.getKey());
+        entity.setNameUz(typesDto.getNameUz());
+        entity.setNameRu(typesDto.getNameRu());
+        entity.setNameEn(typesDto.getNameEn());
 
         typesRepository.save(entity);
     }
-    private void isValid(ArticleTypeDTO dto) {
+    private void isValid(TypesDTO dto) {
         if (dto.getKey().length() < 5) {
             throw new BadRequestException("key to short");
         }
@@ -57,13 +57,13 @@ public class TypesService {
         }
     }
 
-    public List<ArticleTypeDTO> getList() {
+    public List<TypesDTO> getList() {
 
         Iterable<TypesEntity> all = typesRepository.findAllByVisible(true);
-        List<ArticleTypeDTO> dtoList = new LinkedList<>();
+        List<TypesDTO> dtoList = new LinkedList<>();
 
         all.forEach(typesEntity -> {
-            ArticleTypeDTO dto = new ArticleTypeDTO();
+            TypesDTO dto = new TypesDTO();
             dto.setKey(typesEntity.getKey());
             dto.setNameUz(typesEntity.getNameUz());
             dto.setNameRu(typesEntity.getNameRu());
@@ -72,13 +72,13 @@ public class TypesService {
         });
         return dtoList;
     }
-    public List<ArticleTypeDTO> getListOnlyForAdmin() {
+    public List<TypesDTO> getListOnlyForAdmin() {
 
         Iterable<TypesEntity> all = typesRepository.findAll();
-        List<ArticleTypeDTO> dtoList = new LinkedList<>();
+        List<TypesDTO> dtoList = new LinkedList<>();
 
         all.forEach(typesEntity -> {
-            ArticleTypeDTO dto = new ArticleTypeDTO();
+            TypesDTO dto = new TypesDTO();
             dto.setKey(typesEntity.getKey());
             dto.setNameUz(typesEntity.getNameUz());
             dto.setNameRu(typesEntity.getNameRu());

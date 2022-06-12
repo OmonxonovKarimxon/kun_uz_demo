@@ -1,8 +1,47 @@
+
+publisher
+###
+POST localhost:8080/auth/login
+Content-Type: application/json
+
+{
+
+  "email": "muxsin@gmail",
+  "password": "2222"
+}
+###
+
+admin
+###
 POST localhost:8080/auth/login
 Content-Type: application/json
 
 {
 
   "email": "osk",
+  "password": "0000"
+}
+###
+
+moderator
+###
+POST localhost:8080/auth/login
+Content-Type: application/json
+
+{
+
+  "email": "@gmail12",
   "password": "1111"
+}
+###
+
+user
+###
+POST localhost:8080/auth/login
+Content-Type: application/json
+
+{
+
+  "email": "ali@mail",
+  "password": "123456789"
 }

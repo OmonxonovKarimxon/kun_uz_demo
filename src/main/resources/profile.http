@@ -1,13 +1,13 @@
-POST localhost:8080/profile/create
+POST localhost:8080/profile/
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NTQ0OTMsImV4cCI6MTY1NDc1ODA5MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.Kux9-7KJS06SsKyoVSBf7rqMGyY8g7u8Oqc73iMUUd8
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ5NDIxNzEsImV4cCI6MTY1NDk0NTc3MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.a4wlEP7U1BwNN0PYr9Ui4UhGgFO-BlebR6fy1xJn1AU
 
 {
   "name": "jahon",
-  "surname": "qale",
+  "surName": "qalesiz",
   "email": "@gmail12",
   "password": "1111",
-  "role": "PUBLISHER"
+  "role": "MODERATOR"
 }
 ###
 PUT localhost:8080/profile/update

@@ -1,0 +1,53 @@
+POST localhost:8080/article/
+Content-Type: application/json
+Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMTg5OTYsImV4cCI6MTY1NTAyMjU5NiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiTU9ERVJBVE9SIn0.aNdzWrxo7m81PjXtPf4G-bYEDgR_RmzXJ4SLnfpajHQ
+
+{
+  "title": "yangi uylar",
+  "content": "jhvlwer lerbwiyerv lierbuvweir elirvber v ;uirv  ",
+  "description": "achki",
+  "regionId": 1,
+  "categoryId": 1,
+  "typesList":[1
+  ],
+  "tagList": ["#achki","#piyola","#eshak"]
+
+}
+###
+
+GET localhost:8080/article/list
+
+###
+DELETE  localhost:8080/article/
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ5NzM2NTAsImV4cCI6MTY1NDk3NzI1MCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiTU9ERVJBVE9SIn0.Uo2GwpT0MYMwzZbZQr7o3KVipM_VasxsXdDL0_1m1VI
+
+{
+  "id": "4028818b8152554e01815257b2480001"
+}
+
+###
+ PUT localhost:8080/article/publish
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMTYzODMsImV4cCI6MTY1NTAxOTk4MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo0LCJyb2xlIjoiUFVCTElTSEVSIn0.OrVSeEXeu_sUFOTsnAXWkcj2BxVA8vt74tBtP0-hTCk
+
+{
+  "id":"4028818b8152554e01815257b2480001"
+
+}
+###
+GET localhost:8080/article/read
+Content-Type: application/json
+
+{
+  "id": "1"
+}
+###
+PUT localhost:8080/article/like
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMjQxNTIsImV4cCI6MTY1NTAyNzc1MiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo1LCJyb2xlIjoiVVNFUiJ9._-1csIW1fdJuTtsVq6HGJRAo38fUcjXuds8AGdZ24fs
+
+{
+  "id": "1"
+}
+

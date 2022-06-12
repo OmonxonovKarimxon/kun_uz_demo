@@ -6,6 +6,7 @@ import com.company.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -29,5 +30,21 @@ public class ArticleTagService {
 
         }
 
+    }
+
+    public List<String> getTagList(ArticleEntity articleEntity) {
+
+        List<ArticleTagEntity> typesList = articleTagRepository.findByArticle(articleEntity);
+        List<String> tagNameList = new LinkedList<>();
+
+        for (ArticleTagEntity entity : typesList) {
+            String tagName = entity.getTag().getName();
+
+            tagNameList.add(tagName);
+
+
+        }
+
+        return tagNameList;
     }
 }

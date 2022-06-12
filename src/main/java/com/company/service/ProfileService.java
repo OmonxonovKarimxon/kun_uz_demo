@@ -31,7 +31,7 @@ public class ProfileService {
 
         ProfileEntity profile = new ProfileEntity();
         profile.setName(profileDto.getName());
-        profile.setSurname(profileDto.getSurName());
+        profile.setSurname(profileDto.getSurname());
         profile.setEmail(profileDto.getEmail());
         profile.setRole(profileDto.getRole());
         profile.setPassword(profileDto.getPassword());
@@ -51,7 +51,7 @@ public class ProfileService {
             ProfileDTO dto = new ProfileDTO();
             dto.setId(profileEntity.getId());
             dto.setName(profileEntity.getName());
-            dto.setSurName(profileEntity.getSurname());
+            dto.setSurname(profileEntity.getSurname());
             dto.setEmail(profileEntity.getEmail());
             dtoList.add(dto);
         });
@@ -71,7 +71,7 @@ public class ProfileService {
         ProfileEntity entity = profile.get();
 
         entity.setName(dto.getName());
-        entity.setSurname(dto.getSurName());
+        entity.setSurname(dto.getSurname());
         entity.setEmail(dto.getEmail());
         profileRepository.save(entity);
 
@@ -97,7 +97,7 @@ public class ProfileService {
             throw new BadRequestException("wrong name");
         }
 
-        if (dto.getSurName() == null || dto.getSurName().length() < 4) {
+        if (dto.getSurname() == null || dto.getSurname().length() < 4) {
             throw new BadRequestException("surname required.");
         }
 
@@ -114,7 +114,7 @@ public class ProfileService {
             throw new BadRequestException("wrong name");
         }
 
-        if (dto.getSurName() == null || dto.getSurName().length() < 4) {
+        if (dto.getSurname() == null || dto.getSurname().length() < 4) {
             throw new BadRequestException("surname required.");
         }
 

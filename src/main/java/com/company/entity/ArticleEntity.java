@@ -28,11 +28,14 @@ public class ArticleEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false, name = "view_count")
-    private Integer viewCount;
+    @Column(  name = "view_count")
+    private Integer viewCount=0;
 
-    @Column(nullable = false, name = "shared_count")
-    private Integer sharedCount;
+    @Column( name = "shared_count")
+    private Integer sharedCount=0;
+
+    @Column( name = "like_count")
+    private Integer likeCount=0;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -44,7 +47,7 @@ public class ArticleEntity {
     @Column(nullable = false, name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @Column(nullable = false, name = "publish_date")
+    @Column(name = "publish_date")
     private LocalDateTime publishDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
