@@ -1,7 +1,10 @@
 package com.company.service;
 
 import com.company.dto.ProfileDTO;
+import com.company.dto.RegionDto;
 import com.company.entity.ProfileEntity;
+import com.company.entity.RegionEntity;
+import com.company.enums.LangEnum;
 import com.company.enums.ProfileStatus;
 import com.company.exps.AlreadyExist;
 import com.company.exps.AlreadyExistPhone;
@@ -9,8 +12,10 @@ import com.company.exps.BadRequestException;
 import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -42,20 +47,6 @@ public class ProfileService {
         profile.setPassword(null);
 
         return profileDto;
-    }
-
-    public List<ProfileDTO> getList() {
-        Iterable<ProfileEntity> all = profileRepository.findAllByVisible(true);
-        List<ProfileDTO> dtoList = new LinkedList<>();
-        all.forEach(profileEntity -> {
-            ProfileDTO dto = new ProfileDTO();
-            dto.setId(profileEntity.getId());
-            dto.setName(profileEntity.getName());
-            dto.setSurname(profileEntity.getSurname());
-            dto.setEmail(profileEntity.getEmail());
-            dtoList.add(dto);
-        });
-        return dtoList;
     }
 
     public void update(Integer pId, ProfileDTO dto) {
@@ -124,8 +115,37 @@ public class ProfileService {
 
     }
 
-    public ProfileEntity getProfile(Integer profileId){
-    return   profileRepository.findById(profileId).get();
+    public ProfileEntity getProfile(Integer profileId) {
+        Optional<ProfileEntity> profile = profileRepository.findById(profileId);
+        if (profile.isEmpty()) {
+            throw new ItemNotFoundEseption(" mazgi bizda yoq");
+
+        }
+        return profile.get();
+    }
+
+    public PageImpl pagination(Integer page, Integer size ) {
+
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<ProfileEntity> list = profileRepository.findByVisible(true,pageable);
+        List<ProfileDTO> dtoList = new ArrayList<>();
+        List<ProfileEntity> all = list.getContent();
+        for (ProfileEntity entity : all) {
+            ProfileDTO dto = new ProfileDTO();
+            dto.setId(entity.getId());
+            dto.setName(entity.getName());
+            dto.setSurname(entity.getSurname());
+            dto.setEmail(entity.getEmail());
+            dto.setPassword(entity.getPassword());
+            dto.setRole(entity.getRole());
+           dtoList.add(dto);
+        }
+
+
+        return new PageImpl(dtoList, pageable, list.getTotalElements());
     }
 }
 

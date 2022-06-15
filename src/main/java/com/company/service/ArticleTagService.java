@@ -34,17 +34,7 @@ public class ArticleTagService {
 
     public List<String> getTagList(ArticleEntity articleEntity) {
 
-        List<ArticleTagEntity> typesList = articleTagRepository.findByArticle(articleEntity);
-        List<String> tagNameList = new LinkedList<>();
+       return  articleTagRepository.getTagNameList(articleEntity);
 
-        for (ArticleTagEntity entity : typesList) {
-            String tagName = entity.getTag().getName();
-
-            tagNameList.add(tagName);
-
-
-        }
-
-        return tagNameList;
     }
 }

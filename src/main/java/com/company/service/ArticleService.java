@@ -72,14 +72,15 @@ public class ArticleService {
     }
 
     public String update(ArticleDTO dto, Integer profileId) {
-        Optional<ArticleEntity> optional = articleRepository.getById(dto.getId());
+        Optional<ArticleEntity> optional = articleRepository.findByIdAndStatus(dto.getId(), ArticleStatus.NOT_PUBLISHED);
 
-        ArticleEntity entity = optional.get();
-
-        if (entity == null) {
+        if (optional.isEmpty()) {
 
             throw new ItemNotFoundEseption("article not found");
         }
+
+        ArticleEntity entity = optional.get();
+
 
         entity.setContent(dto.getContent());
 
@@ -102,54 +103,33 @@ public class ArticleService {
 
         articleTagService.create(entity, dto.getTagList());  // tag
 
-        return "successfully";
+        return "successfully created";
     }
 
     public List<ArticleDTO> articleList() {
-        Iterable<ArticleEntity> list = articleRepository.findByPublishDateIsNotNull();
+        Iterable<ArticleEntity> list = articleRepository.findByStatus(ArticleStatus.PUBLISHED);
 
         if (list == null) {
-
-            throw new ItemNotFoundEseption("article not found");
+            throw new ItemNotFoundEseption("articles not found");
         }
 
         List<ArticleDTO> dtoList = new LinkedList<>();
         for (ArticleEntity entity : list) {
-            ArticleDTO dto = new ArticleDTO();
-            dto.setTitle(entity.getTitle());
-            dto.setDescription(entity.getDescription());
-            dto.setContent(entity.getContent());
-            dto.setId(entity.getId());
-            dto.setRegionId(entity.getRegion().getId());
-            dto.setCategoryId(entity.getCategory().getId());
-            dto.setViewCount(entity.getViewCount());
-            dto.setLikeCount(entity.getLikeCount());
-
-            List<Integer> typeList = articleTypeService.getTypeList(entity);
-            dto.setTypesList(typeList);
-
-            List<String> tagList = articleTagService.getTagList(entity);
-            dto.setTagList(tagList);
-
+            ArticleDTO dto = entityToDto(entity);
             dtoList.add(dto);
         }
-
 
         return dtoList;
     }
 
-    public String delete(ArticleDTO dto, Integer profileId) {
+    public String delete(ArticleDTO dto) {
         Optional<ArticleEntity> optional = articleRepository.getById(dto.getId());
-
-        ArticleEntity entity = optional.get();
-
-        if (entity == null) {
+        if (optional.isEmpty()) {
 
             throw new ItemNotFoundEseption("article not found");
         }
-
+        ArticleEntity entity = optional.get();
         entity.setVisible(false);
-
         articleRepository.save(entity);
         return "successfully deleted";
     }
@@ -159,20 +139,16 @@ public class ArticleService {
     public ArticleDTO readArticleForUser(ArticleDTO articleDTO) {
 
         Optional<ArticleEntity> optional = articleRepository.getByStatusAndId(ArticleStatus.PUBLISHED, articleDTO.getId());
-
-
         if (optional.isEmpty()) {
 
             throw new ItemNotFoundEseption("article not found");
         }
-
         ArticleEntity entity = optional.get();
-
         entity.setViewCount(entity.getViewCount() + 1);
         articleRepository.save(entity);
 
 
-        return  entityToDto(entity);
+        return entityToDto(entity);
 
     }
 
@@ -180,6 +156,9 @@ public class ArticleService {
     public String publish(ArticleDTO dto, Integer profileId) {
         Optional<ArticleEntity> optional = articleRepository.getById(dto.getId());
         Optional<ProfileEntity> publisher = profileRepository.findById(profileId);
+        if (optional.isEmpty() || publisher.isEmpty()) {
+            throw new ItemNotFoundEseption("no access");
+        }
 
         ArticleEntity entity = optional.get();
         entity.setPublishDate(LocalDateTime.now());
@@ -190,7 +169,7 @@ public class ArticleService {
         return "successfully published";
     }
 
-    public ArticleDTO like(ArticleDTO articleDTO, Integer profileId) {
+    public void like(ArticleDTO articleDTO, Integer profileId) {
 
         Optional<ArticleEntity> articleOptional = articleRepository.getByStatusAndId(ArticleStatus.PUBLISHED, articleDTO.getId());
         Optional<ProfileEntity> userOptional = profileRepository.findById(profileId);
@@ -210,14 +189,16 @@ public class ArticleService {
         articleLikeService.create(article, profile);
 
         articleRepository.save(article);
-
-        return entityToDto(article);
-
-
     }
 
     public ArticleEntity getArticle(String articleId) {
-        return articleRepository.getById(articleId).get();
+
+        Optional<ArticleEntity> articleEntity = articleRepository.getById(articleId);
+
+        if (articleEntity.isEmpty()) {
+            throw new ItemNotFoundEseption(" article not found");
+        }
+        return articleEntity.get();
     }
 
     private ArticleDTO entityToDto(ArticleEntity entity) {

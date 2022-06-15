@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface ArticleRepository extends CrudRepository<ArticleEntity, Integer> {
 
 
+    Optional<ArticleEntity> findByIdAndStatus(String id, ArticleStatus status);
+
     List<ArticleEntity> findByRegion(RegionEntity entity);
 
     List<ArticleEntity> findByCategory(CategoryEntity entity);
@@ -23,5 +25,5 @@ public interface ArticleRepository extends CrudRepository<ArticleEntity, Integer
     Optional<ArticleEntity> getByStatusAndId(ArticleStatus status , String id);
 
 
-    List<ArticleEntity> findByPublishDateIsNotNull( );
+    List<ArticleEntity> findByStatus(ArticleStatus status );
 }

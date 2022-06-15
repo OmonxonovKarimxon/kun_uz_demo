@@ -21,8 +21,8 @@ Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NzU4NDEsImV4cCI6MTY1NDc3OT
   "nameENG": "Jizzakh1"
 }
 ###
-GET localhost:8080/region/list
-Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NzU4NDEsImV4cCI6MTY1NDc3OTQ0MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.DJs2t5mUNX0nN1WMmlBxcjErb7poSuaZtDb-0lcLEPU
+GET localhost:8080/region
+
 
 ###
 DELETE localhost:8080/region/delete
@@ -32,3 +32,5 @@ Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NzU4NDEsImV4cCI6MTY1NDc3OT
 {
   "id": 1
 }
+###
+GET localhost:8080/region/pagination

@@ -22,7 +22,7 @@ public class CommentController {
     @PostMapping("")
     public ResponseEntity<?> create(@RequestBody CommentDTO dto,
                                     @RequestHeader("Authorization") String jwt) {
-        Integer userId = JwtUtil.decode(jwt );
+        Integer userId = JwtUtil.decode(jwt);
         commentService.create(dto, userId);
         return ResponseEntity.ok().body("SuccsessFully created");
     }
@@ -55,8 +55,8 @@ public class CommentController {
     @DeleteMapping("/deleteForAdmin")
     public ResponseEntity<?> deleteForAdmin(@RequestBody CommentDTO dto,
                                             @RequestHeader("Authorization") String jwt) {
-        Integer profileId = JwtUtil.decode(jwt,ProfileRole.ADMIN);
-        commentService.deleteForAdmin(dto, profileId);
+          JwtUtil.decode(jwt,ProfileRole.ADMIN);
+        commentService.deleteForAdmin(dto);
         return ResponseEntity.ok().body("SuccsessFully deleted");
     }
 }

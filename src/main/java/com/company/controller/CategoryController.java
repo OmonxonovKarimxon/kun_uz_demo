@@ -1,10 +1,13 @@
 package com.company.controller;
 
 import com.company.dto.CategoryDTO;
+import com.company.dto.RegionDto;
+import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
 import com.company.service.CategoryService;
 import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +23,9 @@ public class CategoryController {
 
     // PUBLIC
     @GetMapping("")
-    public ResponseEntity<List<CategoryDTO>> getListCategory() {
-        List<CategoryDTO> list = categoryService.getList();
+    public ResponseEntity<?> getListRegion(@RequestHeader(value = "Accept-Laguage", defaultValue = "uz") LangEnum lang)
+    {
+        List<CategoryDTO> list = categoryService.getList(lang);
         return ResponseEntity.ok().body(list);
     }
 
@@ -35,9 +39,10 @@ public class CategoryController {
     }
 
     @GetMapping("/admin")
-    public ResponseEntity<List<CategoryDTO>> getList(@RequestHeader("Authorization") String jwt) {
+    public ResponseEntity<?> getlist(@RequestHeader("Authorization") String jwt,
+                                                   @RequestHeader(value = "Accept-Laguage", defaultValue = "uz")LangEnum lang) {
         JwtUtil.decode(jwt, ProfileRole.ADMIN);
-        List<CategoryDTO> list = categoryService.getListOnlyForAdmin();
+        List<CategoryDTO> list = categoryService.getListOnlyForAdmin(lang);
         return ResponseEntity.ok().body(list);
     }
 
@@ -59,5 +64,12 @@ public class CategoryController {
         return ResponseEntity.ok().body("Sucsessfully deleted");
     }
 
+    @GetMapping("/pagination")
+    public ResponseEntity<?> getPagination(@RequestParam(value = "page", defaultValue = "1") int page,
+                                           @RequestParam(value = "size", defaultValue = "5") int size,
+                                           @RequestHeader(value = "Accept-Laguage", defaultValue = "uz")LangEnum lang) {
+        PageImpl response = categoryService.pagination(page, size, lang);
+        return ResponseEntity.ok().body(response);
+    }
 
 }

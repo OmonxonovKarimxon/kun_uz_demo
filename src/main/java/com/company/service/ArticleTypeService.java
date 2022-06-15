@@ -31,12 +31,8 @@ public class ArticleTypeService {
     }
 
     public List<Integer> getTypeList(ArticleEntity articleEntity) {
-        List<ArticleTypeEntity> typesList = articleTypeRepository.findByArticle(articleEntity);
-        List<Integer> idList = new LinkedList<>();
-        for (ArticleTypeEntity entity : typesList) {
-            Integer id = entity.getTypes().getId();
-            idList.add(id);
-        }
+        List<Integer> idList = articleTypeRepository.getTypeIdList(articleEntity);
+
         return idList;
     }
 

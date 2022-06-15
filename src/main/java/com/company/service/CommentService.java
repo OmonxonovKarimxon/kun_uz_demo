@@ -9,6 +9,7 @@ import com.company.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -28,9 +29,6 @@ public class CommentService {
         ArticleEntity article = articleService.getArticle(dto.getArticleId());
 
 
-        if (profile == null || article == null) {
-            throw new ItemNotFoundEseption("profile or article not found");
-        }
 
         CommentEntity entity = new CommentEntity();
         entity.setContent(dto.getContent());
@@ -52,6 +50,7 @@ public class CommentService {
 
         CommentEntity entity = commentEntity.get();
         entity.setContent(dto.getContent());
+        entity.setUpdateDate(LocalDateTime.now());
         commentRepository.save(entity);
 
     }
@@ -88,7 +87,7 @@ public class CommentService {
         commentRepository.save(entity);
     }
 
-    public void deleteForAdmin(CommentDTO dto, Integer profileId) {
+    public void deleteForAdmin(CommentDTO dto ) {
 
         Optional<CommentEntity> commentEntity = commentRepository.findById(dto.getId());
         if (commentEntity.isEmpty()) {

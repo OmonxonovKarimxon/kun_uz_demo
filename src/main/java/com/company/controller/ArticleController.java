@@ -3,11 +3,8 @@ package com.company.controller;
 import com.company.dto.article.ArticleCreateDTO;
 import com.company.dto.article.ArticleDTO;
 import com.company.enums.ProfileRole;
-import com.company.repository.ArticleTagRepository;
-import com.company.repository.ArticleTypeRepository;
 import com.company.service.ArticleService;
 import com.company.util.JwtUtil;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,8 +60,8 @@ public class ArticleController {
     @DeleteMapping("")
     public ResponseEntity<?>delete(@RequestBody ArticleDTO dto,
     @RequestHeader("Authorization") String jwt) {
-        Integer profileId = JwtUtil.decode(jwt, ProfileRole.MODERATOR);
-        String javob = articleService.delete(dto, profileId);
+    JwtUtil.decode(jwt, ProfileRole.MODERATOR);
+        String javob = articleService.delete(dto );
         return ResponseEntity.ok().body(javob);
     }
 
@@ -72,8 +69,8 @@ public class ArticleController {
     public ResponseEntity<?> like(@RequestBody ArticleDTO dto,
                                     @RequestHeader("Authorization") String jwt) {
         Integer profileId = JwtUtil.decode(jwt);
-        ArticleDTO articleDTO = articleService.like(dto, profileId);
-        return ResponseEntity.ok().body(articleDTO);
+       articleService.like(dto, profileId);
+        return ResponseEntity.ok().build();
     }
 
 }

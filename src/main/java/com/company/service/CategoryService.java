@@ -1,13 +1,17 @@
 package com.company.service;
 
 import com.company.dto.CategoryDTO;
+import com.company.dto.RegionDto;
+import com.company.dto.article.TypesDTO;
 import com.company.entity.CategoryEntity;
-import com.company.entity.RegionEntity;
+import com.company.entity.TypesEntity;
+import com.company.enums.LangEnum;
 import com.company.exps.AlreadyExist;
 import com.company.exps.BadRequestException;
 import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -38,27 +42,36 @@ public class CategoryService {
         categoryRepository.save(entity);
     }
 
-    public List<CategoryDTO> getList() {
+    public List<CategoryDTO> getList(LangEnum lang) {
 
         Iterable<CategoryEntity> all = categoryRepository.findAllByVisible(true);
-        List<CategoryDTO> dtoList = new LinkedList<>();
-
-        all.forEach(categoryEntity -> {
-            dtoList.add(toDTO(categoryEntity));
-        });
-        return dtoList;
+     return entityToDto(all, lang);
     }
 
-    public List<CategoryDTO> getListOnlyForAdmin() {
+    public List<CategoryDTO> getListOnlyForAdmin(LangEnum lang) {
 
         Iterable<CategoryEntity> all = categoryRepository.findAll();
+        return entityToDto(all, lang);
+    }
+
+
+    private List<CategoryDTO> entityToDto( Iterable<CategoryEntity> all,LangEnum lang){
         List<CategoryDTO> dtoList = new LinkedList<>();
 
         all.forEach(categoryEntity -> {
-            dtoList.add(toDTO(categoryEntity));
+            CategoryDTO dto = new CategoryDTO();
+            dto.setKey(categoryEntity.getKey());
+
+            switch (lang) {
+                case ru -> dto.setLang(categoryEntity.getNameRu());
+                case en -> dto.setLang(categoryEntity.getNameEn());
+                case uz -> dto.setLang(categoryEntity.getNameUz());
+            }
+            dtoList.add(dto);
         });
-        return dtoList;
+        return  dtoList;
     }
+
 
     public void update(Integer id, CategoryDTO dto) {
         Optional<CategoryEntity> categoryEntity = categoryRepository.findById(id);
@@ -98,15 +111,20 @@ public class CategoryService {
         });
     }
 
-    public CategoryDTO toDTO(CategoryEntity entity) {
-        CategoryDTO dto = new CategoryDTO();
-        dto.setId(entity.getId());
-        dto.setKey(entity.getKey());
-        dto.setNameUz(entity.getNameUz());
-        dto.setNameRu(entity.getNameRu());
-        dto.setNameEn(entity.getNameEn());
-        return dto;
+    public PageImpl pagination(int page, int size, LangEnum lang) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<CategoryEntity> list = categoryRepository.findAll(pageable) ;
+
+        List<CategoryEntity> all = list.getContent();
+
+        List<CategoryDTO> dtoList = entityToDto(all, lang);
+
+        return new PageImpl(dtoList,pageable, list.getTotalElements());
     }
+
 
     private void isValid(CategoryDTO dto) {
         if (dto.getKey().length() < 5) {

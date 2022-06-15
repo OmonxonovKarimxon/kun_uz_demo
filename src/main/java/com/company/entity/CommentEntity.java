@@ -34,4 +34,6 @@ public class CommentEntity {
 
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate = LocalDateTime.now();
+    @Column(name = "update_date" )
+    private LocalDateTime updateDate ;
 }

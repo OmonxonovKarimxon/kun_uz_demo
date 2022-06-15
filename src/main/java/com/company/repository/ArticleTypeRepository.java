@@ -11,10 +11,12 @@ import java.util.Optional;
 
 public interface ArticleTypeRepository extends CrudRepository<ArticleTypeEntity, Integer> {
 
-    List<ArticleTypeEntity> findByArticle(ArticleEntity entity);
+
+
+    @Query("SELECT u.types.id FROM ArticleTypeEntity u WHERE u.article = ?1  ")
+    List<Integer> getTypeIdList( ArticleEntity entity);
+
     List<ArticleTypeEntity> findByTypes(TypesEntity entity);
 
-//    @Query("SELECT new ArticleEntity (p.article) From ArticleTypeEntity p")
-//    ArticleEntity getArticleList();
 
 }
