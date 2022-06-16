@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "comment_like")
+@Table(name = "article_like")
 public class CommentLikeEntity {
 
     @Id
@@ -21,12 +21,13 @@ public class CommentLikeEntity {
     @JoinColumn(name = "profile_id")
     private ProfileEntity profile;
 
-    @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "article_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private CommentEntity comment;
 
-    @Column(nullable = false)
-    private LikeStatus status = LikeStatus.BLOCK;
+    @Column()
+    @Enumerated(EnumType.STRING)
+    private LikeStatus status  ;
 
 
     @Column(name = "created_date", nullable = false)

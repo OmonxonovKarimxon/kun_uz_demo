@@ -47,4 +47,12 @@ public class ProfileEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "moderator")
     private List<ArticleEntity> articleList;
 
+    public ProfileEntity( ) {
+
+
+    }
+
+    public ProfileEntity(Integer id) {
+        this.id = id;
+    }
 }

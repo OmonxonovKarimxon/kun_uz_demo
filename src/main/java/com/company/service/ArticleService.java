@@ -125,7 +125,6 @@ public class ArticleService {
     public String delete(ArticleDTO dto) {
         Optional<ArticleEntity> optional = articleRepository.getById(dto.getId());
         if (optional.isEmpty()) {
-
             throw new ItemNotFoundEseption("article not found");
         }
         ArticleEntity entity = optional.get();
@@ -162,34 +161,18 @@ public class ArticleService {
 
         ArticleEntity entity = optional.get();
         entity.setPublishDate(LocalDateTime.now());
-        entity.setStatus(ArticleStatus.PUBLISHED);
         entity.setPublisher(publisher.get());
 
+        if(entity.getStatus().equals(ArticleStatus.NOT_PUBLISHED)){
+            entity.setStatus(ArticleStatus.PUBLISHED);
+        }else{
+            entity.setStatus(ArticleStatus.NOT_PUBLISHED);
+        }
         articleRepository.save(entity);
         return "successfully published";
     }
 
-    public void like(ArticleDTO articleDTO, Integer profileId) {
 
-        Optional<ArticleEntity> articleOptional = articleRepository.getByStatusAndId(ArticleStatus.PUBLISHED, articleDTO.getId());
-        Optional<ProfileEntity> userOptional = profileRepository.findById(profileId);
-
-        if (articleOptional.isEmpty() || userOptional.isEmpty()) {
-
-            throw new ItemNotFoundEseption("article or profile not found");
-        }
-
-        ArticleEntity article = articleOptional.get();
-        ProfileEntity profile = userOptional.get();
-
-
-        article.setLikeCount(article.getLikeCount() + 1);
-
-
-        articleLikeService.create(article, profile);
-
-        articleRepository.save(article);
-    }
 
     public ArticleEntity getArticle(String articleId) {
 

@@ -8,8 +8,7 @@ Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMTg5OTYsImV4cCI6MTY1NTAyMj
   "description": "achki",
   "regionId": 1,
   "categoryId": 1,
-  "typesList":[1
-  ],
+  "typesList":[1],
   "tagList": ["#achki","#piyola","#eshak"]
 
 }

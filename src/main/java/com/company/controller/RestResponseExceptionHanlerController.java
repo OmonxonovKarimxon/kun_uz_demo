@@ -10,7 +10,7 @@ public class RestResponseExceptionHanlerController {
 
 
     @ExceptionHandler({BadRequestException.class, ItemNotFoundEseption.class,
-            AlreadyExist.class, AlreadyExistPhone.class, AlreadyExistNameAndSurName.class})
+            NotPermissionException.class, AlreadyExistPhone.class, AlreadyExistNameAndSurName.class})
     public ResponseEntity<String> handleException(RuntimeException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     }

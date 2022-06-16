@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface ArticleRepository extends CrudRepository<ArticleEntity, Integer> {
+public interface ArticleRepository extends CrudRepository<ArticleEntity, String> {
 
 
     Optional<ArticleEntity> findByIdAndStatus(String id, ArticleStatus status);

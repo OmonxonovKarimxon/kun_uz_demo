@@ -1,10 +1,10 @@
 POST localhost:8080/comment/
 Content-Type: application/json
-Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMjkwNzMsImV4cCI6MTY1NTAzMjY3MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo1LCJyb2xlIjoiVVNFUiJ9.xoRuNWpO8sfTTkgE7CIu40R5nKaJm7RzYwzjlWb1H-g
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUzNzI2NjcsImV4cCI6MTY1NTU4ODY2NywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.pGSDmgoc0tETxLQ1uryhW548FCLGf3ekNZk-aejdqvs
 
 {
 "content": "qalesiz ozizcha yaxshi ish qildingizda aa",
-  "articleId":1
+  "articleId":"402881888153c6d1018153c898080000"
 
 }
 
@@ -12,19 +12,16 @@ Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMjkwNzMsImV4cCI6MTY1NTAzMjY3M
 
 PUT localhost:8080/comment/
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMzA1ODMsImV4cCI6MTY1NTAzNDE4MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiTU9ERVJBVE9SIn0.XKDPa-VkTKdbe-BPn42IMiBOM1Ou1zRQyxV4ObEexjE
+Authorization:  Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUzNzI2NjcsImV4cCI6MTY1NTU4ODY2NywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.pGSDmgoc0tETxLQ1uryhW548FCLGf3ekNZk-aejdqvs
 
 {
-"content": "kjjqeve liqur",
-"articleId":1,
-  "id": 1
+"content": " update",
+"articleId":"402881888153c6d1018153c898080000",
+  "id": 5
 }
 
 ###
-PUT localhost:8080/comment/list
+PUT localhost:8080/comment/adm/commentListForAdmin
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUzNzMzNzYsImV4cCI6MTY1NTU4OTM3NiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.3vFtAy_FsyUmUAUjnUX6wHgiBtVsVd9AvR_sHHZve8M
 
-{
-  "articleId": 1,
-  "id": 1
-}

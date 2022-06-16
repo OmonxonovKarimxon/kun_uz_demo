@@ -20,6 +20,9 @@ public class CommentEntity {
     @Column(nullable = false)
     private String content;
 
+    @Column( )
+    private Integer replyId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private ProfileEntity profile;
@@ -36,4 +39,12 @@ public class CommentEntity {
     private LocalDateTime createdDate = LocalDateTime.now();
     @Column(name = "update_date" )
     private LocalDateTime updateDate ;
+
+    public CommentEntity() {
+
+    }
+
+    public CommentEntity(Integer id) {
+        this.id = id;
+    }
 }

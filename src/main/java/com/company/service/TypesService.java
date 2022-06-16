@@ -3,7 +3,7 @@ package com.company.service;
 import com.company.dto.article.TypesDTO;
 import com.company.entity.TypesEntity;
 import com.company.enums.LangEnum;
-import com.company.exps.AlreadyExist;
+import com.company.exps.NotPermissionException;
 import com.company.exps.BadRequestException;
 import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.TypesRepository;
@@ -26,7 +26,7 @@ public class TypesService {
         Optional<TypesEntity> articleTypeEntity = typesRepository.findByKey(typesDto.getKey());
 
         if (articleTypeEntity.isPresent()) {
-            throw new AlreadyExist("Already exist");
+            throw new NotPermissionException("Already exist");
         }
 
         isValid(typesDto);
@@ -51,9 +51,9 @@ public class TypesService {
         TypesEntity entity = articleTypeEntity.get();
 
         entity.setKey(dto.getKey());
-//        entity.setNameUz(dto.getNameUz());
-//        entity.setNameRu(dto.getNameRu());
-//        entity.setNameEn(dto.getNameEn());
+        entity.setNameUz(dto.getNameUz());
+        entity.setNameRu(dto.getNameRu());
+        entity.setNameEn(dto.getNameEn());
         typesRepository.save(entity);
     }
 
@@ -66,7 +66,7 @@ public class TypesService {
         }
 
         if (entity.get().getVisible().equals(Boolean.FALSE)) {
-            throw new AlreadyExist("this articleType already visible false");
+            throw new NotPermissionException("this articleType already visible false");
         }
 
         TypesEntity articleType = entity.get();
@@ -92,7 +92,7 @@ public class TypesService {
 
     public List<TypesDTO> getListOnlyForAdmin(LangEnum lang) {
 
-        Iterable<TypesEntity> all = typesRepository.findAll();
+        Iterable<TypesEntity> all = typesRepository.findAllByVisible(true);
         return entityToDto(all, lang);
     }
 

@@ -4,11 +4,13 @@ import com.company.dto.article.ArticleCreateDTO;
 import com.company.dto.article.ArticleDTO;
 import com.company.enums.ProfileRole;
 import com.company.service.ArticleService;
+import com.company.util.HttpHeaderUtil;
 import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequestMapping("/article")
@@ -18,26 +20,27 @@ public class ArticleController {
     private ArticleService articleService;
 
 
-
-    @PostMapping("")
+    @PostMapping("/adm")
     public ResponseEntity<ArticleDTO> create(@RequestBody ArticleCreateDTO dto,
-                                             @RequestHeader("Authorization") String jwt) {
-        Integer profileId = JwtUtil.decode(jwt, ProfileRole.MODERATOR);
+                                             HttpServletRequest request) {
+        Integer profileId = HttpHeaderUtil.getId(request, ProfileRole.MODERATOR);
+
         ArticleDTO response = articleService.create(dto, profileId);
         return ResponseEntity.ok().body(response);
     }
 
-    @PutMapping("")
+    @PutMapping("/adm")
     public ResponseEntity<?> update(@RequestBody ArticleDTO dto,
-                                    @RequestHeader("Authorization") String jwt) {
-        Integer profileId = JwtUtil.decode(jwt, ProfileRole.MODERATOR);
+                                    HttpServletRequest request) {
+        Integer profileId = HttpHeaderUtil.getId(request, ProfileRole.MODERATOR);
         String javob = articleService.update(dto, profileId);
         return ResponseEntity.ok().body(javob);
     }
-    @PutMapping("/publish")
+
+    @PutMapping("adm/publish")
     public ResponseEntity<?> publish(@RequestBody ArticleDTO dto,
-                                    @RequestHeader("Authorization") String jwt) {
-        Integer profileId = JwtUtil.decode(jwt, ProfileRole.PUBLISHER);
+                                     HttpServletRequest request) {
+        Integer profileId = HttpHeaderUtil.getId(request, ProfileRole.PUBLISHER);
         String javob = articleService.publish(dto, profileId);
         return ResponseEntity.ok().body(javob);
     }
@@ -50,27 +53,21 @@ public class ArticleController {
     }
 
     @GetMapping("/read")
-    public ResponseEntity<?>  readArticleForUser(@RequestBody ArticleDTO dto) {
+    public ResponseEntity<?> readArticleForUser(@RequestBody ArticleDTO dto) {
 
-         ArticleDTO articleDTO  = articleService.readArticleForUser(dto);
+        ArticleDTO articleDTO = articleService.readArticleForUser(dto);
 
         return ResponseEntity.ok().body(articleDTO);
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?>delete(@RequestBody ArticleDTO dto,
-    @RequestHeader("Authorization") String jwt) {
-    JwtUtil.decode(jwt, ProfileRole.MODERATOR);
-        String javob = articleService.delete(dto );
+    @DeleteMapping("/adm")
+    public ResponseEntity<?> delete(@RequestBody ArticleDTO dto,
+                                    HttpServletRequest request) {
+        HttpHeaderUtil.getId(request, ProfileRole.MODERATOR);
+        String javob = articleService.delete(dto);
         return ResponseEntity.ok().body(javob);
     }
 
-    @PutMapping("/like")
-    public ResponseEntity<?> like(@RequestBody ArticleDTO dto,
-                                    @RequestHeader("Authorization") String jwt) {
-        Integer profileId = JwtUtil.decode(jwt);
-       articleService.like(dto, profileId);
-        return ResponseEntity.ok().build();
-    }
+
 
 }

@@ -1,12 +1,9 @@
 package com.company.service;
 
 import com.company.dto.CategoryDTO;
-import com.company.dto.RegionDto;
-import com.company.dto.article.TypesDTO;
 import com.company.entity.CategoryEntity;
-import com.company.entity.TypesEntity;
 import com.company.enums.LangEnum;
-import com.company.exps.AlreadyExist;
+import com.company.exps.NotPermissionException;
 import com.company.exps.BadRequestException;
 import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.CategoryRepository;
@@ -28,7 +25,7 @@ public class CategoryService {
         Optional<CategoryEntity> category = categoryRepository.findByKey(categoryDto.getKey());
 
         if (category.isPresent()) {
-            throw new AlreadyExist("Already exist");
+            throw new NotPermissionException("Already exist");
         }
 
         isValid(categoryDto);
@@ -50,7 +47,7 @@ public class CategoryService {
 
     public List<CategoryDTO> getListOnlyForAdmin(LangEnum lang) {
 
-        Iterable<CategoryEntity> all = categoryRepository.findAll();
+        Iterable<CategoryEntity> all = categoryRepository.findAllByVisible(true);
         return entityToDto(all, lang);
     }
 
@@ -61,6 +58,7 @@ public class CategoryService {
         all.forEach(categoryEntity -> {
             CategoryDTO dto = new CategoryDTO();
             dto.setKey(categoryEntity.getKey());
+            dto.setId(categoryEntity.getId());
 
             switch (lang) {
                 case ru -> dto.setLang(categoryEntity.getNameRu());
@@ -97,7 +95,7 @@ public class CategoryService {
         }
 
         if (entity.get().getVisible().equals(Boolean.FALSE)) {
-            throw new AlreadyExist("this category already visible false");
+            throw new NotPermissionException("this category already visible false");
         }
 
         CategoryEntity category = entity.get();

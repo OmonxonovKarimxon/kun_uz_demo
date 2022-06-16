@@ -25,8 +25,9 @@ public class ArticleLikeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ArticleEntity article;
 
-    @Column(nullable = false)
-    private LikeStatus status = LikeStatus.BLOCK;
+    @Column()
+    @Enumerated(EnumType.STRING)
+    private LikeStatus status  ;
 
 
     @Column(name = "created_date", nullable = false)

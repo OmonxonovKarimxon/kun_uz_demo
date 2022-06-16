@@ -1,12 +1,9 @@
 package com.company.service;
 
 import com.company.dto.ProfileDTO;
-import com.company.dto.RegionDto;
 import com.company.entity.ProfileEntity;
-import com.company.entity.RegionEntity;
-import com.company.enums.LangEnum;
 import com.company.enums.ProfileStatus;
-import com.company.exps.AlreadyExist;
+import com.company.exps.NotPermissionException;
 import com.company.exps.AlreadyExistPhone;
 import com.company.exps.BadRequestException;
 import com.company.exps.ItemNotFoundEseption;
@@ -16,7 +13,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +71,7 @@ public class ProfileService {
             throw new ItemNotFoundEseption("not found profile");
         }
         if (!profile.get().getVisible()) {
-            throw new AlreadyExist("IsVisible False edi");
+            throw new NotPermissionException("IsVisible False edi");
         }
 
         profile.get().setVisible(Boolean.FALSE);
@@ -124,15 +120,16 @@ public class ProfileService {
         return profile.get();
     }
 
-    public PageImpl pagination(Integer page, Integer size ) {
+    public PageImpl pagination(Integer page, Integer size) {
 
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<ProfileEntity> list = profileRepository.findByVisible(true,pageable);
+        Page<ProfileEntity> list = profileRepository.findByVisible(true, pageable);
         List<ProfileDTO> dtoList = new ArrayList<>();
         List<ProfileEntity> all = list.getContent();
+
         for (ProfileEntity entity : all) {
             ProfileDTO dto = new ProfileDTO();
             dto.setId(entity.getId());

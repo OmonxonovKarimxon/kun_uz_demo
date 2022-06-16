@@ -66,10 +66,13 @@ public class ArticleEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private CategoryEntity category;
 
+    public ArticleEntity(String id) {
+        this.id = id;
+    }
 
-
-
-  /*  @ManyToMany
+    public ArticleEntity() {
+    }
+    /*  @ManyToMany
     @JoinTable(name = "article_type",
             joinColumns = @JoinColumn(name = "article_id"),
             inverseJoinColumns = @JoinColumn(name = "types_id")

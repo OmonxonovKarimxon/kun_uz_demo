@@ -1,12 +1,9 @@
 package com.company.service;
 
-import com.company.dto.CategoryDTO;
 import com.company.dto.RegionDto;
-import com.company.dto.article.TypesDTO;
-import com.company.entity.CategoryEntity;
 import com.company.entity.RegionEntity;
 import com.company.enums.LangEnum;
-import com.company.exps.AlreadyExist;
+import com.company.exps.NotPermissionException;
 import com.company.exps.BadRequestException;
 import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.RegionRepository;
@@ -28,7 +25,7 @@ public class RegionService {
         Optional<RegionEntity> region = regionRepository.findByKey(regionDto.getKey());
 
         if (region.isPresent()) {
-            throw new AlreadyExist("Already exist");
+            throw new NotPermissionException("Already exist");
         }
 
         isValid(regionDto);
@@ -79,7 +76,7 @@ public class RegionService {
         }
 
         if (regionEntity.get().getVisible().equals(Boolean.FALSE)) {
-            throw new AlreadyExist("this region already visible false");
+            throw new NotPermissionException("this region already visible false");
         }
 
         RegionEntity region = regionEntity.get();
@@ -97,7 +94,7 @@ public class RegionService {
 
     public List<RegionDto> getListOnlyForAdmin(LangEnum lang) {
 
-        Iterable<RegionEntity> all = regionRepository.findAll();
+        Iterable<RegionEntity> all = regionRepository.findAllByVisible(true);
         return entityToDto(all, lang);
     }
 
