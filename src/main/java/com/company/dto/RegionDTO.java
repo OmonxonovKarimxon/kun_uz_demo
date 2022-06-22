@@ -3,11 +3,9 @@ package com.company.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-import javax.persistence.Column;
-
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RegionDto {
+public class RegionDTO {
     private Integer id;
     private String key;
     private String nameUz;

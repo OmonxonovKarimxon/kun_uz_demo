@@ -1,9 +1,12 @@
 package com.company.dto.article;
 
+import com.company.dto.CategoryDTO;
+import com.company.dto.RegionDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Getter
 @Setter
@@ -14,12 +17,13 @@ public class ArticleDTO {
     private String content;
     private String description;
 
-    private Integer regionId;
-    private Integer categoryId;
-    private Integer likeCount;
+    private RegionDTO region;
+    private CategoryDTO category;
     private Integer viewCount;
+    private LocalDateTime publishDate;
+    private Integer sharedCount;
 
     private List<Integer> typesList;
     private List<String> tagList;
-
+      private  ArticleLikeDTO like;
 }

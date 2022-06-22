@@ -30,19 +30,36 @@ public class ArticleTypeService {
         }
     }
 
-    public List<Integer> getTypeList(ArticleEntity articleEntity) {
+    public List<Integer>  getTypeList(ArticleEntity articleEntity) {
         List<Integer> idList = articleTypeRepository.getTypeIdList(articleEntity);
 
         return idList;
     }
 
-    public List<ArticleEntity> sortByType(TypesEntity typesEntity) {
-        List<ArticleTypeEntity> articleTypeEntityList = articleTypeRepository.findByTypes(typesEntity);
+    public List<ArticleEntity> sortByTypeFiveArticle(TypesEntity typesEntity) {
+        List<ArticleEntity> entities = articleTypeRepository.findByTypes(typesEntity);
         List<ArticleEntity> list = new ArrayList<>();
-        for (ArticleTypeEntity entity : articleTypeEntityList) {
-            list.add(entity.getArticle());
+        for (int i=0; i<5; i++) {
+            list.add(entities.get(i));
         }
         return list;
     }
 
+    public List<ArticleEntity> sortByTypeThreeArticle(TypesEntity typesEntity) {
+        List<ArticleEntity> entities = articleTypeRepository.findByTypes(typesEntity);
+        List<ArticleEntity> list = new ArrayList<>();
+        for (int i=0; i<3; i++) {
+            list.add(entities.get(i));
+        }
+        return list;
+    }
+
+    public List<ArticleEntity> sortByTypeEightArticle(TypesEntity typesEntity) {
+        List<ArticleEntity> entities = articleTypeRepository.findByTypes(typesEntity);
+        List<ArticleEntity> list = new ArrayList<>();
+        for (int i=3; i<8; i++) {
+            list.add(entities.get(i));
+        }
+        return list;
+    }
 }

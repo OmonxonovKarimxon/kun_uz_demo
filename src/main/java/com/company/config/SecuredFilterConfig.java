@@ -24,6 +24,7 @@ public class SecuredFilterConfig {
         bean.addUrlPatterns("/article_like/*");
         bean.addUrlPatterns("/comment_like/*");
         bean.addUrlPatterns("/comment/adm/*");
+        bean.addUrlPatterns("/save/*");
         return bean;
     }
 }

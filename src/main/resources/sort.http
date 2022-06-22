@@ -6,7 +6,7 @@ Content-Type: application/json
 }
 
 ###
-GET localhost:8080/sort/typeList
+GET localhost:8080/sort/typeList8
 Content-Type: application/json
 
 {

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "article_like")
+@Table(name = "comment_Like")
 public class CommentLikeEntity {
 
     @Id
@@ -21,7 +21,7 @@ public class CommentLikeEntity {
     @JoinColumn(name = "profile_id")
     private ProfileEntity profile;
 
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name = "comment_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private CommentEntity comment;
 

@@ -6,8 +6,10 @@ import com.company.entity.ProfileEntity;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ArticleLikeRepository extends CrudRepository<ArticleLikeEntity, Integer> {
@@ -24,4 +26,11 @@ public interface ArticleLikeRepository extends CrudRepository<ArticleLikeEntity,
     void delete(String articleId, Integer profileId);
 
 
+    @Query(value = "select  " +
+            "       CAST(SUM  (CASE WHEN status = 'LIKE' THEN 1 ELSE 0 END) as int) AS like_count , " +
+            "       CAST(SUM(CASE WHEN status = 'DISLIKE' THEN 1 ELSE 0 END) as int) AS dislike_count " +
+            "       from article_like" +
+            "       where article_id =:articleId",
+            nativeQuery = true)
+    Map<String, Integer> countByArticleNative(@Param("articleId") String articleId);
 }

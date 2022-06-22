@@ -108,6 +108,22 @@ public class CategoryService {
             throw new ItemNotFoundEseption("category not found");
         });
     }
+    public CategoryDTO get(CategoryEntity entity, LangEnum lang) {
+        CategoryDTO dto = new CategoryDTO();
+        dto.setKey(entity.getKey());
+        switch (lang) {
+            case ru:
+                dto.setLang(entity.getNameRu());
+                break;
+            case en:
+                dto.setLang(entity.getNameEn());
+                break;
+            case uz:
+                dto.setLang(entity.getNameUz());
+                break;
+        }
+        return dto;
+    }
 
     public PageImpl pagination(int page, int size, LangEnum lang) {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");

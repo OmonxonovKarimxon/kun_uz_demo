@@ -1,9 +1,6 @@
 package com.company.repository;
 
-import com.company.entity.ArticleEntity;
-import com.company.entity.ArticleLikeEntity;
 import com.company.entity.CommentLikeEntity;
-import com.company.entity.ProfileEntity;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

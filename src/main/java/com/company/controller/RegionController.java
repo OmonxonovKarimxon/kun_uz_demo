@@ -1,12 +1,11 @@
 package com.company.controller;
 
-import com.company.dto.RegionDto;
+import com.company.dto.RegionDTO;
 import com.company.dto.article.TypesDTO;
 import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
 import com.company.service.RegionService;
 import com.company.util.HttpHeaderUtil;
-import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ public class RegionController {
 
     // SECURE
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody RegionDto dto,
+    public ResponseEntity<?> create(@RequestBody RegionDTO dto,
                                     HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
         regionService.create(dto);
@@ -35,13 +34,13 @@ public class RegionController {
                                      HttpServletRequest request) {
 
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
-        List<RegionDto> list = regionService.getListOnlyForAdmin(lang);
+        List<RegionDTO> list = regionService.getListOnlyForAdmin(lang);
         return ResponseEntity.ok().body(list);
     }
 
     @PutMapping("/adm/{id}")
     private ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                     @RequestBody RegionDto dto,
+                                     @RequestBody RegionDTO dto,
                                      HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
         regionService.update(id, dto);
@@ -71,7 +70,7 @@ public class RegionController {
     @GetMapping("/getByLang")
     public ResponseEntity<?> getPagination(@RequestBody TypesDTO dto,
                                            @RequestHeader(value = "Accept-Laguage", defaultValue = "uz") LangEnum lang) {
-        List<RegionDto> list = regionService.getList(lang);
+        List<RegionDTO> list = regionService.getList(lang);
         return ResponseEntity.ok().body(list);
     }
 

@@ -1,6 +1,5 @@
 package com.company.dto.article;
 
-import com.company.dto.RegionDto;
 import lombok.Getter;
 import lombok.Setter;
 

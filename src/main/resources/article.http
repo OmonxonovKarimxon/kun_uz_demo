@@ -26,21 +26,22 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ5NzM2NTAsImV4cCI6MTY1NDk3NzI1
 }
 
 ###
- PUT localhost:8080/article/publish
+ PUT localhost:8080/article/adm/publish
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMTYzODMsImV4cCI6MTY1NTAxOTk4MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo0LCJyb2xlIjoiUFVCTElTSEVSIn0.OrVSeEXeu_sUFOTsnAXWkcj2BxVA8vt74tBtP0-hTCk
+Authorization:  Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTU0NjQzMDQsImV4cCI6MTY1NTY4MDMwNCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo0LCJyb2xlIjoiUFVCTElTSEVSIn0.3_8dEJkoDJPyiC-_wbUNJCg7V7jqtz5ZgrhpNUoqJSc
 
 {
   "id":"4028818b8152554e01815257b2480001"
 
 }
 ###
-GET localhost:8080/article/read
+POST localhost:8080/article/last8
 Content-Type: application/json
 
 {
-  "id": "1"
+ "idList": ["402881858152fcff0181530537ef0001","4028818b8152554e01815257b2480001"]
 }
+
 ###
 PUT localhost:8080/article/like
 Content-Type: application/json
@@ -49,4 +50,7 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMjQxNTIsImV4cCI6MTY1NTAyNzc1
 {
   "id": "1"
 }
+###
+GET localhost:8080/article/region/assalomu alaykum1
+
 

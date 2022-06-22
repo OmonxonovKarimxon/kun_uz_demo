@@ -1,6 +1,6 @@
 package com.company.service;
 
-import com.company.dto.RegionDto;
+import com.company.dto.RegionDTO;
 import com.company.entity.RegionEntity;
 import com.company.enums.LangEnum;
 import com.company.exps.NotPermissionException;
@@ -20,7 +20,7 @@ public class RegionService {
     @Autowired
     private RegionRepository regionRepository;
 
-    public void create(RegionDto regionDto) {
+    public void create(RegionDTO regionDto) {
 
         Optional<RegionEntity> region = regionRepository.findByKey(regionDto.getKey());
 
@@ -45,9 +45,24 @@ public class RegionService {
             throw new ItemNotFoundEseption("Region not found");
         });
     }
+    public RegionDTO get(RegionEntity entity, LangEnum lang) {
+        RegionDTO dto = new RegionDTO();
+        dto.setKey(entity.getKey());
+        switch (lang) {
+            case ru:
+                dto.setLang(entity.getNameRu());
+                break;
+            case en:
+                dto.setLang(entity.getNameEn());
+                break;
+            case uz:
+                dto.setLang(entity.getNameUz());
+                break;
+        }
+        return dto;
+    }
 
-
-    public void update(Integer id, RegionDto dto) {
+    public void update(Integer id, RegionDTO dto) {
         Optional<RegionEntity> regionEntity = regionRepository.findById(id);
 
         if (regionEntity.isEmpty()) {
@@ -86,13 +101,13 @@ public class RegionService {
         regionRepository.save(region);
     }
 
-    public List<RegionDto> getList(LangEnum lang) {
+    public List<RegionDTO> getList(LangEnum lang) {
 
         Iterable<RegionEntity> all = regionRepository.findAllByVisible(true);
         return entityToDto(all, lang);
     }
 
-    public List<RegionDto> getListOnlyForAdmin(LangEnum lang) {
+    public List<RegionDTO> getListOnlyForAdmin(LangEnum lang) {
 
         Iterable<RegionEntity> all = regionRepository.findAllByVisible(true);
         return entityToDto(all, lang);
@@ -107,7 +122,7 @@ public class RegionService {
 
         List<RegionEntity> all = list.getContent();
 
-        List<RegionDto> dtoList = entityToDto(all, lang);
+        List<RegionDTO> dtoList = entityToDto(all, lang);
 
         return new PageImpl(dtoList,pageable, list.getTotalElements());
     }
@@ -119,11 +134,11 @@ public class RegionService {
 
 
 
-    private List<RegionDto> entityToDto( Iterable<RegionEntity> all,LangEnum lang){
-        List<RegionDto> dtoList = new LinkedList<>();
+    private List<RegionDTO> entityToDto(Iterable<RegionEntity> all, LangEnum lang){
+        List<RegionDTO> dtoList = new LinkedList<>();
 
         all.forEach(regionEntity -> {
-            RegionDto dto = new RegionDto();
+            RegionDTO dto = new RegionDTO();
             dto.setKey(regionEntity.getKey());
             dto.setId(regionEntity.getId());
 
@@ -139,7 +154,7 @@ public class RegionService {
 
 
 
-    private void isValid(RegionDto dto) {
+    private void isValid(RegionDTO dto) {
         if (dto.getKey().length() < 5) {
             throw new BadRequestException("key to short");
         }

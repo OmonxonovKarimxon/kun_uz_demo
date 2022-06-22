@@ -1,14 +1,10 @@
 package com.company.controller;
 
 import com.company.dto.CategoryDTO;
-import com.company.dto.JwtDTO;
-import com.company.dto.RegionDto;
-import com.company.dto.article.TypesDTO;
 import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
 import com.company.service.CategoryService;
 import com.company.util.HttpHeaderUtil;
-import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,6 @@
 package com.company.service;
 
+import com.company.dto.article.ArticleLikeDTO;
 import com.company.entity.ArticleEntity;
 import com.company.entity.ArticleLikeEntity;
 import com.company.entity.ProfileEntity;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -55,5 +57,17 @@ public class ArticleLikeService {
             articleLikeRepository.delete(articleLikeEntity);
         });*/
         articleLikeRepository.delete(articleId, pId);
+    }
+
+    public ArticleLikeDTO likeCountAndDislikeCount(String articleId) {
+//        int like = articleLikeRepository.countByArticleAndStatus(new ArticleEntity(articleId), LikeStatus.LIKE);
+//        int dislike = articleLikeRepository.countByArticle(articleId, LikeStatus.DISLIKE);
+
+        Map<String, Integer> map = articleLikeRepository.countByArticleNative(articleId);
+
+        ArticleLikeDTO dto = new ArticleLikeDTO();
+        dto.setLikeCount(map.get("like_count"));
+        dto.setDislikeCount(map.get("dislike_count"));
+        return dto;
     }
 }

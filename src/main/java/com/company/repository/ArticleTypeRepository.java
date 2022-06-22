@@ -16,7 +16,17 @@ public interface ArticleTypeRepository extends CrudRepository<ArticleTypeEntity,
     @Query("SELECT u.types.id FROM ArticleTypeEntity u WHERE u.article = ?1  ")
     List<Integer> getTypeIdList( ArticleEntity entity);
 
-    List<ArticleTypeEntity> findByTypes(TypesEntity entity);
+
+    @Query( "SELECT u.article  FROM ArticleTypeEntity u" +
+            " WHERE u.types=:entity  and  u.article.status= 'PUBLISHED' " +
+            " ORDER BY u.article.publishDate  DESC " )
+    List<ArticleEntity> findByTypes( TypesEntity entity);
+
+
+
 
 
 }
+
+
+

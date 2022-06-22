@@ -1,0 +1,11 @@
+POST localhost:8080/save/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUzODA5NTQsImV4cCI6MTY1NTU5Njk1NCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.VZcTLvfUe_cdJFCUREQP0k0TpI1RZ22cig7m5_YTIlc
+
+{
+ "articleId":"4028818b8152554e01815298155c0002"
+
+}
+###
+GET localhost:8080/save/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUzODA5NTQsImV4cCI6MTY1NTU5Njk1NCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.VZcTLvfUe_cdJFCUREQP0k0TpI1RZ22cig7m5_YTIlc

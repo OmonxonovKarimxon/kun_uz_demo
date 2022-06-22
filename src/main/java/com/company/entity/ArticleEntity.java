@@ -72,6 +72,34 @@ public class ArticleEntity {
 
     public ArticleEntity() {
     }
+
+
+
+    public ArticleEntity(String id, String title, String description, LocalDateTime publishDate) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.publishDate = publishDate;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /*  @ManyToMany
     @JoinTable(name = "article_type",
             joinColumns = @JoinColumn(name = "article_id"),
