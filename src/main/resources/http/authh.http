@@ -1,47 +1,62 @@
-
 publisher
+
 ###
 POST localhost:8080/auth/login
 Content-Type: application/json
 
 {
-
   "email": "muxsin@gmail",
   "password": "2222"
 }
+
 ###
 
 admin
+
 ###
 POST localhost:8080/auth/login
 Content-Type: application/json
 
 {
-
   "email": "osk",
   "password": "0000"
 }
+
 ###
 
 moderator
+
 ###
 POST localhost:8080/auth/login
 Content-Type: application/json
 
 {
-
   "email": "@gmail12",
   "password": "1111"
 }
+
 ###
 
 user
+
 ###
 POST localhost:8080/auth/login
 Content-Type: application/json
 
 {
-
   "email": "ali@mail",
   "password": "123456789"
 }
+
+###
+POST localhost:8080/auth/registration
+Content-Type: application/json
+
+{
+  "name": "ali",
+  "surname": "Aliyev",
+  "email": "omonxonovsaidkarim1998@gmail.com",
+  "password": "123456789"
+}
+###
+POST localhost:8080/auth/resendEmail/eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyMjU2NzMsImV4cCI6MTY1NjIyOTI3MywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo0Nn0.AKAGPjEIovGv-pQ1r9cxwi63_L7SBp6A1P02F0MKAsg

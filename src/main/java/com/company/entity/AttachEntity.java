@@ -36,4 +36,10 @@ public class AttachEntity {
     @Column(nullable = false, name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
 
+    public AttachEntity(String id) {
+        this.id = id;
+    }
+
+    public AttachEntity() {
+    }
 }

@@ -26,6 +26,8 @@ public class ProfileEntity {
 
     @Column(nullable = false)
     private String email;
+    @Column
+    private String phone;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -40,6 +42,10 @@ public class ProfileEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "photo_id")
+    private AttachEntity photo;
 
     @Column(nullable = false, name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();

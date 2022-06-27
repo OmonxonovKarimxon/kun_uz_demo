@@ -6,14 +6,16 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProfileDTO {
+public class ProfileFilterDTO {
     private Integer id;
     private String name;
     private String surname;
     private String email;
     private ProfileRole role;
-    private String password;
-    private String photoId;
-    private String jwt;
+    private  String RegisterDateFrom;
+    private  String RegisterDateTo;
+
+
+
 
 }

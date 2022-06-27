@@ -1,18 +1,22 @@
 package com.company.service;
 
 import com.company.dto.ProfileDTO;
+import com.company.dto.ProfileFilterDTO;
+import com.company.entity.AttachEntity;
 import com.company.entity.ProfileEntity;
 import com.company.enums.ProfileStatus;
 import com.company.exps.NotPermissionException;
 import com.company.exps.AlreadyExistPhone;
 import com.company.exps.BadRequestException;
 import com.company.exps.ItemNotFoundEseption;
+import com.company.repository.ProfileFilterRepository;
 import com.company.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +24,10 @@ import java.util.Optional;
 public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
+    @Autowired
+    private AttachService attachService;
+    @Autowired
+    private ProfileFilterRepository profileFilterRepository;
 
     public ProfileDTO create(ProfileDTO profileDto) {
 
@@ -56,6 +64,18 @@ public class ProfileService {
         isValidUpdate(dto);
 
         ProfileEntity entity = profile.get();
+
+        if (entity.getPhoto() == null && dto.getPhotoId() != null) {
+            entity.setPhoto(new AttachEntity(dto.getPhotoId()));
+        } else if (entity.getPhoto() != null && dto.getPhotoId() == null) {
+            attachService.delete(entity.getPhoto().getId());
+            entity.setPhoto(null);
+        } else if (entity.getPhoto() != null && dto.getPhotoId() != null &&
+                !entity.getPhoto().getId().equals(dto.getPhotoId())) {
+            attachService.delete(entity.getPhoto().getId());
+            entity.setPhoto(new AttachEntity(dto.getPhotoId()));
+        }
+
 
         entity.setName(dto.getName());
         entity.setSurname(dto.getSurname());
@@ -131,18 +151,37 @@ public class ProfileService {
         List<ProfileEntity> all = list.getContent();
 
         for (ProfileEntity entity : all) {
-            ProfileDTO dto = new ProfileDTO();
-            dto.setId(entity.getId());
-            dto.setName(entity.getName());
-            dto.setSurname(entity.getSurname());
-            dto.setEmail(entity.getEmail());
-            dto.setPassword(entity.getPassword());
-            dto.setRole(entity.getRole());
-           dtoList.add(dto);
+            ProfileDTO dto = entityToDto(entity);
+            dtoList.add(dto);
         }
 
 
         return new PageImpl(dtoList, pageable, list.getTotalElements());
     }
+
+    public List<ProfileDTO> filter(ProfileFilterDTO profileFilterDTO) {
+        List<ProfileEntity> profileEntityList = profileFilterRepository.filter(profileFilterDTO);
+        List<ProfileDTO> dtoList = new LinkedList<>();
+        for (ProfileEntity entity : profileEntityList) {
+            ProfileDTO dto = entityToDto(entity);
+            dtoList.add(dto);
+        }
+        return  dtoList;
+     }
+
+
+     private ProfileDTO entityToDto(ProfileEntity entity){
+
+         ProfileDTO dto = new ProfileDTO();
+         dto.setId(entity.getId());
+         dto.setName(entity.getName());
+         dto.setSurname(entity.getSurname());
+         dto.setEmail(entity.getEmail());
+         dto.setPassword(entity.getPassword());
+         dto.setRole(entity.getRole());
+       return  dto;
+     }
+
+
 }
 

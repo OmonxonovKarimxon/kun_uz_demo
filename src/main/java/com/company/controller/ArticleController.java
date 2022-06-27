@@ -1,5 +1,6 @@
 package com.company.controller;
 
+import com.company.dto.ArticleFilterDTO;
 import com.company.dto.RegionDTO;
 import com.company.dto.article.ArticleCreateDTO;
 import com.company.dto.article.ArticleDTO;
@@ -80,12 +81,12 @@ public class ArticleController {
     }
 
     // 8. Get Article By Id And Lang  ArticleFullInfo
-    @GetMapping("/{id}")
-    public ResponseEntity<ArticleDTO> getLast5ArticleByType(@PathVariable("id") String id,
-                                                            @RequestHeader(value = "Accept-Language", defaultValue = "uz") LangEnum lang) {
-        ArticleDTO response = articleService.getPublishedArticleById(id, lang);
-        return ResponseEntity.ok().body(response);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ArticleDTO> getLast5ArticleByType(@PathVariable("id") String id,
+//                                                            @RequestHeader(value = "Accept-Language", defaultValue = "uz") LangEnum lang) {
+//        ArticleDTO response = articleService.getPublishedArticleById(id, lang);
+//        return ResponseEntity.ok().body(response);
+//    }
 
     //   9. Get Last 4 Article By Types and except given article id.   ArticleShortInfo
 //    @PostMapping("/last8")
@@ -143,8 +144,8 @@ public class ArticleController {
 
     @GetMapping("/category/{categoryKay}")
     public ResponseEntity<?> getArticleByCategoryKay(@PathVariable("categoryKay") String categoryKay,
-                                                   @RequestParam(value = "page", defaultValue = "0") int page,
-                                                   @RequestParam(value = "size", defaultValue = "5") int size){
+                                                   @RequestParam(value = "page" ) int page,
+                                                   @RequestParam(value = "size" ) int size){
 
         PageImpl<ArticleDTO> list = articleService.getArticleByCategoryKey(page, size, categoryKay);
         return ResponseEntity.ok().body(list);
@@ -157,7 +158,11 @@ public class ArticleController {
          articleService.increase(articleId);
         return ResponseEntity.ok().build();
     }
-
+    @PostMapping("/filter")
+    public ResponseEntity<?> filter(@RequestBody ArticleFilterDTO dto) {
+        List<ArticleDTO> response = articleService.filter(dto);
+        return ResponseEntity.ok().body(response);
+    }
 
 
 

@@ -21,5 +21,12 @@ Authorization:  eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ3NTY4NjIsImV4cCI6MTY1NDc2MDQ
   "password": "1111"
 }
 ###
-GET localhost:8080/profile/list
-Authorization:  eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUyNzQ5NDgsImV4cCI6MTY1NTI3ODU0OCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.r3vI4pHdEzntl1MR14RuxDbkdfkz5jN5aZ9ggJSpvZ4
+GET localhost:8080/profile/adm/filter
+Content-Type:  application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyNzI2MDAsImV4cCI6MTY1NjQ4ODYwMCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.RfwOasz6Lr1AQPubXle2DvNYdaspYiUbEJj-fCrcUG0
+
+{
+  "surname": "Omonxonov",
+  "role": "ADMIN"
+
+}

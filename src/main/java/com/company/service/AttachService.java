@@ -1,13 +1,15 @@
 package com.company.service;
 
-import com.company.dto.article.ArticleDTO;
-import com.company.entity.ArticleEntity;
+import com.company.dto.AttachDTO;
 import com.company.entity.AttachEntity;
 import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.AttachRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,82 +31,76 @@ public class AttachService {
     @Autowired
     private AttachRepository attachRepository;
 
-    private final String attachFolder = "attaches/";
+    @Value("${attach.folder}")
+    private String attachFolder;
+    @Value("${server.url}")
+    private String serverUrl;
 
-    //create
-    public String saveToSystem(MultipartFile file ) {
+    public AttachDTO saveToSystem(MultipartFile file) {
         try {
             // zari.jpg
-            AttachEntity entity = new AttachEntity();
-
             String pathFolder = getYmDString(); // 2022/06/20
-
+            String uuid = UUID.randomUUID().toString(); //  asdas-dasdas-dasdasd-adadsd
             String extension = getExtension(file.getOriginalFilename()); // jpg
+
+            String fileName = uuid + "." + extension; //  asdas-dasdas-dasdasd-adadsd.jpg
+
 
             File folder = new File(attachFolder + pathFolder); // attaches/2022/06/20
             if (!folder.exists()) {
                 folder.mkdirs();
             }
-
-
-
-            entity.setExtention(extension);
-            entity.setOriginName(file.getOriginalFilename());
-            entity.setSize(file.getSize());
-            entity.setPath(String.valueOf(folder));
-
-
-
-            attachRepository.save(entity);
-
-            String fileName = entity.getId() + "." + extension; //  asdas-dasdas-dasdasd-adadsd.jpg
-
             byte[] bytes = file.getBytes();
             // attaches/2022/06/20/asdas-dasdasd-asdas0asdas.jpg
             Path path = Paths.get(attachFolder + pathFolder + "/" + fileName);
             Files.write(path, bytes);
 
-            return fileName;
+            AttachEntity entity = new AttachEntity();
+            entity.setId(uuid);
+            entity.setExtention(extension);
+            entity.setOriginName(file.getOriginalFilename());
+            entity.setSize(file.getSize());
+            entity.setPath(pathFolder);
+            attachRepository.save(entity);
+
+            AttachDTO dto = new AttachDTO();
+            dto.setUrl(serverUrl + "attach/open/" + entity.getId());
+            // http://localhost:8081/attach/open/8bd17c91-c1ac-494c-800d-dffd61307ef5
+            return dto;
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-//    public byte[] loadImage(String fileName) {
-//        byte[] imageInByte;
-//
-//        BufferedImage originalImage;
-//        try {
-//            originalImage = ImageIO.read(new File("attaches/" + fileName));
-//        } catch (Exception e) {
-//            return new byte[0];
-//        }
-//
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        try {
-//            ImageIO.write(originalImage, "png", baos);
-//            baos.flush();
-//            imageInByte = baos.toByteArray();
-//            baos.close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return imageInByte;
-//    }
+    public byte[] loadImage(String id) {
+        byte[] imageInByte;
+        String path = getFileFullPath(get(id));
 
-    //read
-    public byte[] open_general(String fileName) {
+        BufferedImage originalImage;
+        try {
+            originalImage = ImageIO.read(new File(path));
+        } catch (Exception e) {
+            return new byte[0];
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(originalImage, "png", baos);
+            baos.flush();
+            imageInByte = baos.toByteArray();
+            baos.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return imageInByte;
+    }
+
+    public byte[] open_general(String id) {
         byte[] data;
         try {
-            Optional<AttachEntity> optional = attachRepository.findById(fileName);
-            if (optional.isEmpty()) {
-                throw new ItemNotFoundEseption("image not found mazgi");
-            }
-            AttachEntity entity = optional.get();
-
             // fileName -> zari.jpg
-            String path = entity.getPath() + "/" + entity.getId() + "." + entity.getExtention();
+            String path = getFileFullPath(get(id));
             Path file = Paths.get(path);
             data = Files.readAllBytes(file);
             return data;
@@ -114,18 +110,16 @@ public class AttachService {
         return new byte[0];
     }
 
-    public Resource download(String fileName) {
+    public ResponseEntity<Resource> download(String id) {
         try {
-            Optional<AttachEntity> optional = attachRepository.findById(fileName);
-            if (optional.isEmpty()) {
-                throw new ItemNotFoundEseption("we have not this photo mazgi");
-            }
-            AttachEntity entity = optional.get();
-            Path file = Paths.get(entity.getPath() + "/" + entity.getId() + "." + entity.getExtention());
+            AttachEntity entity = get(id);
+            String path = getFileFullPath(entity);
+            Path file = Paths.get(path);
             Resource resource = new UrlResource(file.toUri());
 
             if (resource.exists() || resource.isReadable()) {
-                return resource;
+                return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + entity.getOriginName() + "\"").body(resource);
             } else {
                 throw new RuntimeException("Could not read the file!");
             }
@@ -134,11 +128,28 @@ public class AttachService {
         }
     }
 
+    public String delete(String id) {
+        Optional<AttachEntity> byId = attachRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new ItemNotFoundEseption("Mazgimisan bunaqa attach yo'q");
+        }
+        AttachEntity entity = byId.get();
+        String path = getFileFullPath(entity);
+
+        try {
+            Files.delete(Path.of(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        attachRepository.deleteById(entity.getId());
+        return "successfully deleted";
+    }
+
+
     public String getExtension(String fileName) { // mp3/jpg/npg/mp4.....
         int lastIndex = fileName.lastIndexOf(".");
         return fileName.substring(lastIndex + 1);
     }
-
 
     public String getYmDString() {
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -148,20 +159,17 @@ public class AttachService {
         return year + "/" + month + "/" + day; // 2022/04/23
     }
 
-    public void delete(String fileName) {
 
-        Optional<AttachEntity> optional = attachRepository.findById(fileName);
-        if (optional.isEmpty()) {
-            throw new ItemNotFoundEseption("we have not this photo mazgi");
 
-        }
-        AttachEntity entity = optional.get();
-        attachRepository.deleteById(fileName);
 
-        try {
-            Files.delete(Path.of(entity.getPath() + "/" + entity.getId() + "." + entity.getExtention()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private AttachEntity get(String id) {
+        return attachRepository.findById(id).orElseThrow(() -> {
+            throw new ItemNotFoundEseption("Attach Not Found");
+        });
     }
+
+    private String getFileFullPath(AttachEntity entity) {
+        return attachFolder + entity.getPath() + "/" + entity.getId() + "." + entity.getExtention();
+    }
+
 }

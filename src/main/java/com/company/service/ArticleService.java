@@ -1,5 +1,6 @@
 package com.company.service;
 
+import com.company.dto.ArticleFilterDTO;
 import com.company.dto.RegionDTO;
 import com.company.dto.article.ArticleCreateDTO;
 import com.company.dto.article.ArticleDTO;
@@ -9,6 +10,7 @@ import com.company.enums.ArticleStatus;
 import com.company.enums.LangEnum;
 import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.ArticleRepository;
+import com.company.repository.CustomArticleRepository;
 import com.company.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,7 +41,7 @@ public class ArticleService {
     @Autowired
     private ArticleLikeService articleLikeService;
     @Autowired
-    private TypesService typesService;
+    private CustomArticleRepository customArticleRepository;
 
     public String create(ArticleCreateDTO dto, Integer profileId) {
         ArticleEntity entity = new ArticleEntity();
@@ -270,6 +272,19 @@ public class ArticleService {
         });
         return  new PageImpl(dtoList,pageable, articlePage.getTotalElements());
     }
+
+    public List<ArticleDTO> filter(ArticleFilterDTO filterDTO) {
+        List<ArticleEntity> entityList = customArticleRepository.filter(filterDTO);
+        List<ArticleDTO> dtolist = new LinkedList<>();
+
+        for (ArticleEntity entity : entityList) {
+            ArticleDTO dto = fullDTO(entity);
+            dtolist.add(dto);
+        }
+
+        return dtolist;
+    }
+
     private ArticleDTO fullDTO(ArticleEntity entity) {
         ArticleDTO dto = new ArticleDTO();
         dto.setId(entity.getId());
@@ -304,6 +319,7 @@ public class ArticleService {
         entity.setViewCount(entity.getViewCount() + 1);
         articleRepository.updateViewCount(entity.getViewCount());
     }
+
 
 
 }

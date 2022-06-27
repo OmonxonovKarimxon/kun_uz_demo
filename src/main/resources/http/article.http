@@ -14,7 +14,8 @@ Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMTg5OTYsImV4cCI6MTY1NTAyMj
 }
 ###
 
-GET localhost:8080/article/list
+GET localhost:8080/article/region/1
+
 
 ###
 DELETE  localhost:8080/article/
@@ -52,5 +53,19 @@ Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMjQxNTIsImV4cCI6MTY1NTAyNzc1
 }
 ###
 GET localhost:8080/article/region/assalomu alaykum1
+
+###
+POST  localhost:8080/article/filter
+Content-Type: application/json
+
+
+{
+
+ "regionId": 1,
+  "description": "juratli inson"
+}
+###
+GET http://localhost:8080/article/category/333333?page=0&size1
+
 
 

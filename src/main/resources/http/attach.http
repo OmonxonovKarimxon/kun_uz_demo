@@ -9,5 +9,5 @@ Content-Type: multipart/form-data; boundary=WebAppBoundary
 --WebAppBoundary
 Content-Disposition: form-data; name="file"; filename="download.jpg"
 
-< C:\Users\Karimxon\Desktop\download.jpg
+< C:\Users\Karimxon\Desktop\1\download.jpg
 
