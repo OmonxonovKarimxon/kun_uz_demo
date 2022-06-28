@@ -20,13 +20,14 @@ public class EmailController {
     private EmailService emailService;
 
 
-    @GetMapping("/getEmail")
+    @GetMapping("/adm/getEmail")
     public ResponseEntity<?> getEmail(@RequestParam(value = "size", defaultValue = "5") Integer size,
-                                      @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                      @RequestParam(value = "page", defaultValue = "0") Integer page,
                                       HttpServletRequest request) {
-        HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
+       HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
 
-      PageImpl<EmailHistoryEntity> list= emailService.pegination(size,page);
+
+        PageImpl<EmailHistoryEntity> list= emailService.pagination(size,page);
       return ResponseEntity.ok().body(list);
 
     }

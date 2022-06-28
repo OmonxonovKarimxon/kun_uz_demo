@@ -1,6 +1,7 @@
 package com.company.service;
 
 import com.company.dto.*;
+import com.company.entity.AttachEntity;
 import com.company.entity.ProfileEntity;
 import com.company.entity.SmsEntity;
 import com.company.enums.ProfileRole;
@@ -62,7 +63,9 @@ public class AuthService {
         entity.setStatus(ProfileStatus.BLOCK);
 
         entity.setRole(ProfileRole.USER);
+        entity.setPhoto(new AttachEntity(dto.getPhotoId()));
         entity.setPhone(dto.getPhone());
+
         profileRepository.save(entity);
 
 

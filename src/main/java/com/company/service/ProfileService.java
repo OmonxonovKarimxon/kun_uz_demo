@@ -29,6 +29,7 @@ public class ProfileService {
     @Autowired
     private ProfileFilterRepository profileFilterRepository;
 
+
     public ProfileDTO create(ProfileDTO profileDto) {
 
         Optional<ProfileEntity> entity = profileRepository.findByEmail(profileDto.getEmail());
@@ -45,6 +46,8 @@ public class ProfileService {
         profile.setRole(profileDto.getRole());
         profile.setPassword(profileDto.getPassword());
         profile.setStatus(ProfileStatus.ACTIVE);
+
+        profile.setPhoto(new AttachEntity(profileDto.getPhotoId()));
         profileRepository.save(profile);
 
         profileDto.setId(profile.getId());

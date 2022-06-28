@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/article")
@@ -25,7 +26,7 @@ public class ArticleController {
 
     //  1. CREATE (Moderator) status(NotPublished)
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody ArticleCreateDTO dto,
+    public ResponseEntity<?> create(@RequestBody @Valid ArticleCreateDTO dto,
 
                                              HttpServletRequest request) {
         Integer profileId = HttpHeaderUtil.getId(request, ProfileRole.MODERATOR);
@@ -36,7 +37,7 @@ public class ArticleController {
 
     //  2. Update (Moderator (status to not publish))
     @PutMapping("/adm")
-    public ResponseEntity<?> update(@RequestBody ArticleDTO dto, HttpServletRequest request) {
+    public ResponseEntity<String> update(@RequestBody ArticleDTO dto, HttpServletRequest request) {
         Integer profileId = HttpHeaderUtil.getId(request, ProfileRole.MODERATOR);
         String javob = articleService.update(dto, profileId);
         return ResponseEntity.ok().body(javob);
@@ -44,7 +45,7 @@ public class ArticleController {
 
     //  3. Delete Article (MODERATOR)
     @DeleteMapping("/adm")
-    public ResponseEntity<?> delete(@RequestBody ArticleDTO dto, HttpServletRequest request) {
+    public ResponseEntity<String> delete(@RequestBody ArticleDTO dto, HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.MODERATOR);
         String javob = articleService.delete(dto);
         return ResponseEntity.ok().body(javob);
@@ -52,7 +53,7 @@ public class ArticleController {
 
     // 4.Change status by id (PUBLISHER) (publish,not_publish)
     @PutMapping("adm/publish")
-    public ResponseEntity<?> publish(@RequestBody ArticleDTO dto, HttpServletRequest request) {
+    public ResponseEntity<String> publish(@RequestBody ArticleDTO dto, HttpServletRequest request) {
         Integer profileId = HttpHeaderUtil.getId(request, ProfileRole.PUBLISHER);
         String javob = articleService.publish(dto, profileId);
         return ResponseEntity.ok().body(javob);
@@ -80,21 +81,21 @@ public class ArticleController {
         return ResponseEntity.ok().body(response);
     }
 
-    // 8. Get Article By Id And Lang  ArticleFullInfo
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ArticleDTO> getLast5ArticleByType(@PathVariable("id") String id,
-//                                                            @RequestHeader(value = "Accept-Language", defaultValue = "uz") LangEnum lang) {
-//        ArticleDTO response = articleService.getPublishedArticleById(id, lang);
-//        return ResponseEntity.ok().body(response);
-//    }
+  //   8. Get Article By Id And Lang  ArticleFullInfo
+    @GetMapping("/{id}")
+    public ResponseEntity<ArticleDTO> getLast5ArticleByType(@PathVariable("id") String id,
+                                                            @RequestHeader(value = "Accept-Language", defaultValue = "uz") LangEnum lang) {
+        ArticleDTO response = articleService.getPublishedArticleById(id, lang);
+        return ResponseEntity.ok().body(response);
+    }
 
-    //   9. Get Last 4 Article By Types and except given article id.   ArticleShortInfo
-//    @PostMapping("/last8")
-//    public ResponseEntity<List<ArticleDTO>> last4EsceptArticleId(@RequestBody ArticleRequestDTO dto) {
-//        List<ArticleDTO> response = articleService.getLat8ArticleNotIn(dto.getIdList());
-//        return ResponseEntity.ok().body(response);
-//
-//    }
+  //     9. Get Last 4 Article By Types and except given article id.   ArticleShortInfo
+    @PostMapping("/last8")
+    public ResponseEntity<List<ArticleDTO>> last4EsceptArticleId(@RequestBody ArticleRequestDTO dto) {
+        List<ArticleDTO> response = articleService.getLat8ArticleNotIn(dto.getIdList());
+        return ResponseEntity.ok().body(response);
+
+    }
     //  10. Get 4 most read articles  ArticleShortInfo
     @GetMapping("/theBestArticle")
     public ResponseEntity<?> theBestArticle() {

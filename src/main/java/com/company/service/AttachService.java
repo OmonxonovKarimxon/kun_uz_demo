@@ -172,4 +172,13 @@ public class AttachService {
         return attachFolder + entity.getPath() + "/" + entity.getId() + "." + entity.getExtention();
     }
 
+    public  AttachEntity getAttach(String Id) {
+        Optional<AttachEntity> optional = attachRepository.findById(Id);
+        if (optional.isEmpty()){
+            throw new ItemNotFoundEseption("we have not this photo");
+        }
+        return optional.get();
+    }
+
+
 }

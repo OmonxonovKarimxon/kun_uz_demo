@@ -77,15 +77,15 @@ public class EmailService {
         return emailHistoryRepository.getEmailCount(email);
     }
 
-    public PageImpl<EmailHistoryEntity> pegination(Integer size, Integer page) {
+    public PageImpl<EmailHistoryEntity> pagination(Integer size, Integer page) {
 
         Sort sort= Sort.by(Sort.Direction.ASC, "id");
 
-        Pageable pegeable = PageRequest.of(page,size,sort);
-        Page<EmailHistoryEntity> all = emailHistoryRepository.findAll(pegeable);
+        Pageable pageable = PageRequest.of(page,size,sort);
+        Page<EmailHistoryEntity> all = emailHistoryRepository.findAll(pageable);
         List<EmailHistoryEntity>list = all.getContent();
 
-        return  new PageImpl(list, pegeable, all.getTotalElements());
+        return  new PageImpl(list, pageable, all.getTotalElements());
 
 
     }

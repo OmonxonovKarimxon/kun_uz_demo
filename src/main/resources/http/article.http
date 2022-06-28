@@ -1,10 +1,10 @@
-POST localhost:8080/article/
+POST localhost:8080/article/adm/
 Content-Type: application/json
-Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwMTg5OTYsImV4cCI6MTY1NTAyMjU5NiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiTU9ERVJBVE9SIn0.aNdzWrxo7m81PjXtPf4G-bYEDgR_RmzXJ4SLnfpajHQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYzMzEwMDAsImV4cCI6MTY1NjU0NzAwMCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiTU9ERVJBVE9SIn0.z4pAvlMHWEA40ZLbcSazLWFRbU7gpZoEC4Ah8Sq5eBs
 
 {
-  "title": "yangi uylar",
-  "content": "jhvlwer lerbwiyerv lierbuvweir elirvber v ;uirv  ",
+
+
   "description": "achki",
   "regionId": 1,
   "categoryId": 1,

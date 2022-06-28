@@ -1,0 +1,3 @@
+GET localhost:8080/email/adm/getEmail
+Content-Type:  application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYzMTEzNjcsImV4cCI6MTY1NjUyNzM2NywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.UgI0a4kvFe5ZKuoO8gMby-tHfqpOJjKTS59414E9aOs
