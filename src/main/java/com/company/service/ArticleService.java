@@ -1,7 +1,7 @@
 package com.company.service;
 
-import com.company.dto.ArticleFilterDTO;
-import com.company.dto.RegionDTO;
+import com.company.dto.article.ArticleFilterDTO;
+import com.company.dto.region.RegionDTO;
 import com.company.dto.article.ArticleCreateDTO;
 import com.company.dto.article.ArticleDTO;
 import com.company.dto.article.ArticleLikeDTO;
@@ -12,6 +12,7 @@ import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.ArticleRepository;
 import com.company.repository.CustomArticleRepository;
 import com.company.repository.ProfileRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
@@ -43,6 +45,7 @@ public class ArticleService {
     @Autowired
     private CustomArticleRepository customArticleRepository;
 
+
     public String create(ArticleCreateDTO dto, Integer profileId) {
         ArticleEntity entity = new ArticleEntity();
         entity.setTitle(dto.getTitle());
@@ -59,6 +62,7 @@ public class ArticleService {
         moderator.setId(profileId);
         entity.setModerator(moderator);
         entity.setStatus(ArticleStatus.NOT_PUBLISHED);
+        entity.setPhotoId( new AttachEntity(dto.getPhotoId()));
 
         articleRepository.save(entity);
 
@@ -108,6 +112,7 @@ public class ArticleService {
     public String delete(ArticleDTO dto) {
         Optional<ArticleEntity> optional = articleRepository.getById(dto.getId());
         if (optional.isEmpty()) {
+
             throw new ItemNotFoundEseption("article not found");
         }
         ArticleEntity entity = optional.get();
@@ -230,25 +235,25 @@ public class ArticleService {
         return dtoList;
     }
 
-        public List<ArticleDTO> get4ArticleBytypesAndRegion(Integer typeId, RegionDTO dto) {
-            Pageable pageable = PageRequest.of(0, 4);
-            Page<ArticleEntity> articlePage = articleRepository.get4ArticleBytypesAndRegion(typeId, dto.getKey(), pageable);
-            List<ArticleDTO> dtoList = new LinkedList<>();
-            articlePage.getContent().forEach(article -> {
-                dtoList.add(shortDTOInfo(article));
-            });
-            return dtoList;
-        }
+    public List<ArticleDTO> get4ArticleBytypesAndRegion(Integer typeId, RegionDTO dto) {
+        Pageable pageable = PageRequest.of(0, 4);
+        Page<ArticleEntity> articlePage = articleRepository.get4ArticleBytypesAndRegion(typeId, dto.getKey(), pageable);
+        List<ArticleDTO> dtoList = new LinkedList<>();
+        articlePage.getContent().forEach(article -> {
+            dtoList.add(shortDTOInfo(article));
+        });
+        return dtoList;
+    }
 
-        public PageImpl<ArticleDTO> getArticleByRegionKey(Integer page, Integer size, String regionKay) {
+    public PageImpl<ArticleDTO> getArticleByRegionKey(Integer page, Integer size, String regionKay) {
 
-            Pageable pageable = PageRequest.of(page, size);
-            Page<ArticleEntity> articlePage = articleRepository.getArticleByRegionKay(regionKay, pageable);
-            List<ArticleDTO> dtoList = new LinkedList<>();
-            articlePage.getContent().forEach(article -> {
-                dtoList.add(shortDTOInfo(article));
-            });
-            return  new PageImpl(dtoList,pageable, articlePage.getTotalElements());
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ArticleEntity> articlePage = articleRepository.getArticleByRegionKay(regionKay, pageable);
+        List<ArticleDTO> dtoList = new LinkedList<>();
+        articlePage.getContent().forEach(article -> {
+            dtoList.add(shortDTOInfo(article));
+        });
+        return  new PageImpl(dtoList,pageable, articlePage.getTotalElements());
     }
 
     public List<ArticleDTO> last5ByCategoryKey(  String key) {

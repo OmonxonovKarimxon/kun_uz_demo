@@ -2,7 +2,7 @@ package com.company.service;
 
 import com.company.dto.comment.CommentDTO;
 import com.company.dto.comment.CommentResponseDTO;
-import com.company.dto.ProfileDTO;
+import com.company.dto.profile.ProfileDTO;
 import com.company.dto.article.ArticleDTO;
 import com.company.entity.ArticleEntity;
 import com.company.entity.CommentEntity;

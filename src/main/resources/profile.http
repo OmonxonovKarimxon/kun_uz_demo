@@ -1,13 +1,14 @@
-POST localhost:8080/profile/
+POST localhost:8080/profile/adm
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ5NDIxNzEsImV4cCI6MTY1NDk0NTc3MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.a4wlEP7U1BwNN0PYr9Ui4UhGgFO-BlebR6fy1xJn1AU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY0MTk2MDcsImV4cCI6MTY1NjYzNTYwNywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.XR5EXHO6y7qgNP1QUn4E12d_nb8ZiVfqDtpIpRJgcyE
 
 {
   "name": "jahon",
-  "surName": "qalesiz",
-  "email": "@gmail12",
+  "surname": "qalesiz",
+  "email": "@gmail121222",
   "password": "1111",
-  "role": "MODERATOR"
+  "role": "USER",
+  "photoId": "40288186818c7a7b01818c7a95b40000"
 }
 ###
 PUT localhost:8080/profile/update

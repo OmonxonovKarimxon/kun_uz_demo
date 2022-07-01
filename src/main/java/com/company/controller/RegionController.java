@@ -1,7 +1,8 @@
 package com.company.controller;
 
-import com.company.dto.RegionDTO;
-import com.company.dto.article.TypesDTO;
+import com.company.dto.region.RegionCreateDTO;
+import com.company.dto.region.RegionDTO;
+import com.company.dto.types.TypesDTO;
 import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
 import com.company.service.RegionService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/region")
@@ -22,7 +24,7 @@ public class RegionController {
 
     // SECURE
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody RegionDTO dto,
+    public ResponseEntity<?> create(@RequestBody @Valid RegionCreateDTO dto,
                                     HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
         regionService.create(dto);
@@ -40,7 +42,7 @@ public class RegionController {
 
     @PutMapping("/adm/{id}")
     private ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                     @RequestBody RegionDTO dto,
+                                     @RequestBody @Valid RegionDTO dto,
                                      HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
         regionService.update(id, dto);
@@ -68,7 +70,7 @@ public class RegionController {
 
     //PUBLIC
     @GetMapping("/getByLang")
-    public ResponseEntity<?> getPagination(@RequestBody TypesDTO dto,
+    public ResponseEntity<?> getPagination(@RequestBody @Valid TypesDTO dto,
                                            @RequestHeader(value = "Accept-Laguage", defaultValue = "uz") LangEnum lang) {
         List<RegionDTO> list = regionService.getList(lang);
         return ResponseEntity.ok().body(list);

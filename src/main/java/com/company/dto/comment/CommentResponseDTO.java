@@ -1,6 +1,6 @@
 package com.company.dto.comment;
 
-import com.company.dto.ProfileDTO;
+import com.company.dto.profile.ProfileDTO;
 import com.company.dto.article.ArticleDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

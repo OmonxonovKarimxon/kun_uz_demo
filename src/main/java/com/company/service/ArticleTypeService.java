@@ -1,6 +1,5 @@
 package com.company.service;
 
-import com.company.dto.article.TypesDTO;
 import com.company.entity.ArticleEntity;
 import com.company.entity.ArticleTypeEntity;
 import com.company.entity.TypesEntity;
@@ -10,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ArticleTypeService {

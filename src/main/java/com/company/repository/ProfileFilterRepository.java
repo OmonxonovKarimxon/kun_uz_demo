@@ -1,9 +1,7 @@
 package com.company.repository;
 
-import com.company.dto.ProfileFilterDTO;
-import com.company.entity.ArticleEntity;
+import com.company.dto.profile.ProfileFilterDTO;
 import com.company.entity.ProfileEntity;
-import com.company.enums.ArticleStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -46,7 +44,7 @@ public class ProfileFilterRepository {
             builder.append(" and a.role='" + dto.getRole() + "'");
         }
         if (dto.getRegisterDateFrom() != null && dto.getRegisterDateTo() == null) {
-        // builder.append(" and a.publishDate = '" + dto.getPublishedDateFrom() + "' ");
+            // builder.append(" and a.publishDate = '" + dto.getPublishedDateFrom() + "' ");
             LocalDate localDate = LocalDate.parse(dto.getRegisterDateFrom());
             LocalDateTime fromTime = LocalDateTime.of(localDate, LocalTime.MIN); // yyyy-MM-dd 00:00:00
             LocalDateTime toTime = LocalDateTime.of(localDate, LocalTime.MAX); // yyyy-MM-dd 23:59:59

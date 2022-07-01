@@ -1,4 +1,4 @@
-package com.company.dto;
+package com.company.dto.profile;
 
 import com.company.enums.ProfileRole;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,18 +1,18 @@
 package com.company.controller;
 
-import com.company.dto.article.TypesDTO;
-import com.company.entity.TypesEntity;
+import com.company.dto.types.TypeCreateDTO;
+import com.company.dto.types.TypesDTO;
 import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
 import com.company.service.TypesService;
 import com.company.util.HttpHeaderUtil;
-import com.company.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/types")
@@ -23,7 +23,7 @@ public class TypesController {
 
     // SECURE
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody TypesDTO dto,
+    public ResponseEntity<?> create(@RequestBody @Valid TypeCreateDTO dto,
                                     HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
         typesService.create(dto);
@@ -41,7 +41,7 @@ public class TypesController {
 
     @PutMapping("/adm/{id}")
     private ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                     @RequestBody TypesDTO dto,
+                                     @RequestBody @Valid TypesDTO dto,
                                      HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
         typesService.update(id, dto);

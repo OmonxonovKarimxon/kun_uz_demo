@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "Authorization and Registration")
 @RestController
+@Slf4j
 @RequestMapping("/auth")
 public class AuthController {
 

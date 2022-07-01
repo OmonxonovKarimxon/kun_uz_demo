@@ -1,7 +1,8 @@
 package com.company.service;
 
-import com.company.dto.ProfileDTO;
-import com.company.dto.ProfileFilterDTO;
+import com.company.dto.profile.ProfileCreateDTO;
+import com.company.dto.profile.ProfileDTO;
+import com.company.dto.profile.ProfileFilterDTO;
 import com.company.entity.AttachEntity;
 import com.company.entity.ProfileEntity;
 import com.company.enums.ProfileStatus;
@@ -37,7 +38,7 @@ public class ProfileService {
             throw new AlreadyExistPhone("Already exist phone");
         }
 
-        isValid(profileDto);
+
 
         ProfileEntity profile = new ProfileEntity();
         profile.setName(profileDto.getName());
@@ -49,11 +50,9 @@ public class ProfileService {
 
         profile.setPhoto(new AttachEntity(profileDto.getPhotoId()));
         profileRepository.save(profile);
-
-        profileDto.setId(profile.getId());
         profile.setPassword(null);
 
-        return profileDto;
+        return  "successfully";
     }
 
     public void update(Integer pId, ProfileDTO dto) {
@@ -118,21 +117,7 @@ public class ProfileService {
 
     }
 
-    private void isValid(ProfileDTO dto) {
 
-        if (dto.getName() == null || dto.getName().length() < 3) {
-            throw new BadRequestException("wrong name");
-        }
-
-        if (dto.getSurname() == null || dto.getSurname().length() < 4) {
-            throw new BadRequestException("surname required.");
-        }
-
-        if (dto.getEmail() == null || dto.getEmail().length() < 3) {
-            throw new BadRequestException("email required.");
-        }
-
-    }
 
     public ProfileEntity getProfile(Integer profileId) {
         Optional<ProfileEntity> profile = profileRepository.findById(profileId);
@@ -170,20 +155,20 @@ public class ProfileService {
             dtoList.add(dto);
         }
         return  dtoList;
-     }
+    }
 
 
-     private ProfileDTO entityToDto(ProfileEntity entity){
+    private ProfileDTO entityToDto(ProfileEntity entity){
 
-         ProfileDTO dto = new ProfileDTO();
-         dto.setId(entity.getId());
-         dto.setName(entity.getName());
-         dto.setSurname(entity.getSurname());
-         dto.setEmail(entity.getEmail());
-         dto.setPassword(entity.getPassword());
-         dto.setRole(entity.getRole());
-       return  dto;
-     }
+        ProfileDTO dto = new ProfileDTO();
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setSurname(entity.getSurname());
+        dto.setEmail(entity.getEmail());
+        dto.setPassword(entity.getPassword());
+        dto.setRole(entity.getRole());
+        return  dto;
+    }
 
 
 }

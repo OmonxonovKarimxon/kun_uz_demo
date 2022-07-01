@@ -66,6 +66,10 @@ public class ArticleEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private CategoryEntity category;
 
+    @JoinColumn(name = "photo_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    private AttachEntity photoId;
+
     public ArticleEntity(String id) {
         this.id = id;
     }

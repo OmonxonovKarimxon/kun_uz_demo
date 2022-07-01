@@ -1,6 +1,6 @@
 package com.company.repository;
 
-import com.company.dto.ArticleFilterDTO;
+import com.company.dto.article.ArticleFilterDTO;
 import com.company.entity.ArticleEntity;
 import com.company.enums.ArticleStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class CustomArticleRepository   {
             builder.append(" and a.region.id=" + dto.getRegionId() + " ");
         }
         if (dto.getPublishedDateFrom() != null && dto.getPublishedDateTo() == null) {
-        // builder.append(" and a.publishDate = '" + dto.getPublishedDateFrom() + "' ");
+            // builder.append(" and a.publishDate = '" + dto.getPublishedDateFrom() + "' ");
             LocalDate localDate = LocalDate.parse(dto.getPublishedDateFrom());
             LocalDateTime fromTime = LocalDateTime.of(localDate, LocalTime.MIN); // yyyy-MM-dd 00:00:00
             LocalDateTime toTime = LocalDateTime.of(localDate, LocalTime.MAX); // yyyy-MM-dd 23:59:59

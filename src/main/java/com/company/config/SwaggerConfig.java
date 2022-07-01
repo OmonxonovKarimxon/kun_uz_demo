@@ -30,7 +30,7 @@ public class SwaggerConfig {
                 .apiInfo(apiDetails());
     }
     private ApiInfo apiDetails() {
-        return new ApiInfo("Mazgi Project",
+        return new ApiInfo("My Super Project Name",
                 "Api documentation for project name.",
                 "1.0",
                 "Beast team.",

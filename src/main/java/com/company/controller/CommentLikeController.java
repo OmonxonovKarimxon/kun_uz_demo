@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RequestMapping("/comment_like")
 @RestController
@@ -22,7 +23,7 @@ public class CommentLikeController {
     private CommentLikeService commentLikeService;
 
     @PostMapping("/like")
-    public ResponseEntity<Void> like(@RequestBody CommentLikeDTO dto,
+    public ResponseEntity<Void> like(@RequestBody @Valid CommentLikeDTO dto,
                                      HttpServletRequest request) {
         Integer profileId = HttpHeaderUtil.getId(request);
         commentLikeService.articleLike(dto.getCommentId(), profileId);
@@ -30,7 +31,7 @@ public class CommentLikeController {
     }
 
     @PostMapping("/dislike")
-    public ResponseEntity<Void> dislike(@RequestBody CommentLikeDTO dto,
+    public ResponseEntity<Void> dislike(@RequestBody @Valid CommentLikeDTO dto,
                                         HttpServletRequest request) {
         Integer profileId = HttpHeaderUtil.getId(request);
         commentLikeService.articleDisLike(dto.getCommentId(), profileId);

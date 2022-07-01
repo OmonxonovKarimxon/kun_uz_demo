@@ -1,6 +1,7 @@
 package com.company.service;
 
-import com.company.dto.CategoryDTO;
+import com.company.dto.category.CategoryCreateDTO;
+import com.company.dto.category.CategoryDTO;
 import com.company.entity.CategoryEntity;
 import com.company.enums.LangEnum;
 import com.company.exps.BadRequestException;
@@ -20,7 +21,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public void create(CategoryDTO categoryDto) {
+    public void create(CategoryCreateDTO categoryDto) {
 
         Optional<CategoryEntity> category = categoryRepository.findByKey(categoryDto.getKey());
 
@@ -28,7 +29,6 @@ public class CategoryService {
             throw new NotPermissionException("Already exist");
         }
 
-        isValid(categoryDto);
 
         CategoryEntity entity = new CategoryEntity();
         entity.setKey(categoryDto.getKey());
@@ -42,7 +42,7 @@ public class CategoryService {
     public List<CategoryDTO> getList(LangEnum lang) {
 
         Iterable<CategoryEntity> all = categoryRepository.findAllByVisible(true);
-     return entityToDto(all, lang);
+        return entityToDto(all, lang);
     }
 
     public List<CategoryDTO> getListOnlyForAdmin(LangEnum lang) {
@@ -140,22 +140,6 @@ public class CategoryService {
     }
 
 
-    private void isValid(CategoryDTO dto) {
-        if (dto.getKey().length() < 5) {
-            throw new BadRequestException("key to short");
-        }
 
-        if (dto.getNameUz() == null || dto.getNameUz().length() < 3) {
-            throw new BadRequestException("wrong name uz");
-        }
-
-        if (dto.getNameRu() == null || dto.getNameRu().length() < 3) {
-            throw new BadRequestException("wrong name ru");
-        }
-
-        if (dto.getNameEn() == null || dto.getNameEn().length() < 3) {
-            throw new BadRequestException("wrong name en");
-        }
-    }
 
 }

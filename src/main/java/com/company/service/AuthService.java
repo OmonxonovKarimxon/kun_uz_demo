@@ -70,7 +70,7 @@ public class AuthService {
 
 
         //    smsService.sendRegistrationSms(dto.getPhone());
-      emailService.sendRegistrationEmail(entity.getEmail(), entity.getId());
+        emailService.sendRegistrationEmail(entity.getEmail(), entity.getId());
 
         return "Message was send";
     }

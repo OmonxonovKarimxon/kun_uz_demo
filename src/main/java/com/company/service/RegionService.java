@@ -1,6 +1,7 @@
 package com.company.service;
 
-import com.company.dto.RegionDTO;
+import com.company.dto.region.RegionCreateDTO;
+import com.company.dto.region.RegionDTO;
 import com.company.entity.RegionEntity;
 import com.company.enums.LangEnum;
 import com.company.exps.NotPermissionException;
@@ -20,7 +21,7 @@ public class RegionService {
     @Autowired
     private RegionRepository regionRepository;
 
-    public void create(RegionDTO regionDto) {
+    public void create(RegionCreateDTO regionDto) {
 
         Optional<RegionEntity> region = regionRepository.findByKey(regionDto.getKey());
 
@@ -28,13 +29,13 @@ public class RegionService {
             throw new NotPermissionException("Already exist");
         }
 
-        isValid(regionDto);
+
 
         RegionEntity regionEntity = new RegionEntity();
         regionEntity.setKey(regionDto.getKey());
-//        regionEntity.setNameUz(regionDto.getNameUz());
-//        regionEntity.setNameRu(regionDto.getNameRu());
-//        regionEntity.setNameEn(regionDto.getNameEn());
+        regionEntity.setNameUz(regionDto.getNameUz());
+        regionEntity.setNameRu(regionDto.getNameRu());
+        regionEntity.setNameEn(regionDto.getNameEn());
 
         regionRepository.save(regionEntity);
     }

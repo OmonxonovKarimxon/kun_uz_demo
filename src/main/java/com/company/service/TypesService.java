@@ -1,10 +1,10 @@
 package com.company.service;
 
-import com.company.dto.article.TypesDTO;
+import com.company.dto.types.TypeCreateDTO;
+import com.company.dto.types.TypesDTO;
 import com.company.entity.TypesEntity;
 import com.company.enums.LangEnum;
 import com.company.exps.NotPermissionException;
-import com.company.exps.BadRequestException;
 import com.company.exps.ItemNotFoundEseption;
 import com.company.repository.TypesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +21,22 @@ public class TypesService {
     @Autowired
     private TypesRepository typesRepository;
 
-    public void create(TypesDTO typesDto) {
+    public void create(TypeCreateDTO dto) {
 
-        Optional<TypesEntity> articleTypeEntity = typesRepository.findByKey(typesDto.getKey());
+        Optional<TypesEntity> articleTypeEntity = typesRepository.findByKey(dto.getKey());
 
         if (articleTypeEntity.isPresent()) {
             throw new NotPermissionException("Already exist");
         }
 
-        isValid(typesDto);
+
 
 
         TypesEntity entity = new TypesEntity();
-        entity.setKey(typesDto.getKey());
-        entity.setNameUz(typesDto.getNameUz());
-        entity.setNameRu(typesDto.getNameRu());
-        entity.setNameEn(typesDto.getNameEn());
+        entity.setKey(dto.getKey());
+        entity.setNameUz(dto.getNameUz());
+        entity.setNameRu(dto.getNameRu());
+        entity.setNameEn(dto.getNameEn());
 
         typesRepository.save(entity);
     }
@@ -130,22 +130,6 @@ public class TypesService {
     }
 
 
-    private void isValid(TypesDTO dto) {
-        if (dto.getKey().length() < 5) {
-            throw new BadRequestException("key to short");
-        }
 
-        if (dto.getNameUz() == null || dto.getNameUz().length() < 3) {
-            throw new BadRequestException("wrong name uz");
-        }
-
-        if (dto.getNameRu() == null || dto.getNameRu().length() < 3) {
-            throw new BadRequestException("wrong name ru");
-        }
-
-        if (dto.getNameEn() == null || dto.getNameEn().length() < 3) {
-            throw new BadRequestException("wrong name en");
-        }
-    }
 }
 

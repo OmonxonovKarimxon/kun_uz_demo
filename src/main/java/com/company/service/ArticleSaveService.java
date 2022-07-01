@@ -1,20 +1,17 @@
 package com.company.service;
 
-import com.company.dto.ArticleSaveDTO;
-import com.company.dto.ArticleSaveResponseDTO;
+import com.company.dto.article.ArticleSaveDTO;
+import com.company.dto.article.ArticleSaveResponseDTO;
 import com.company.dto.article.ArticleDTO;
 import com.company.entity.ArticleEntity;
 import com.company.entity.ArticleSaveEntity;
 import com.company.entity.ProfileEntity;
-import com.company.repository.ArticleRepository;
 import com.company.repository.ArticleSaveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ArticleSaveService {

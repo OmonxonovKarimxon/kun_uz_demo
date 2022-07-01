@@ -1,6 +1,7 @@
 package com.company.controller;
 
-import com.company.dto.CategoryDTO;
+import com.company.dto.category.CategoryCreateDTO;
+import com.company.dto.category.CategoryDTO;
 import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
 import com.company.service.CategoryService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/category")
@@ -23,7 +25,7 @@ public class CategoryController {
 
     // SECURE
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody CategoryDTO dto,
+    public ResponseEntity<?> create(@RequestBody @Valid CategoryCreateDTO dto,
                                     HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
         categoryService.create(dto);
@@ -41,7 +43,7 @@ public class CategoryController {
 
     @PutMapping("/adm/{id}")
     private ResponseEntity<?> update(@PathVariable("id") Integer id,
-                                     @RequestBody CategoryDTO dto,
+                                     @RequestBody  @Valid CategoryDTO dto,
                                      HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
         categoryService.update(id, dto);

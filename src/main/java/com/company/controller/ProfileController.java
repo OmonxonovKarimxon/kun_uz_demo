@@ -1,7 +1,8 @@
 package com.company.controller;
 
-import com.company.dto.ProfileDTO;
-import com.company.dto.ProfileFilterDTO;
+import com.company.dto.profile.ProfileCreateDTO;
+import com.company.dto.profile.ProfileDTO;
+import com.company.dto.profile.ProfileFilterDTO;
 import com.company.enums.ProfileRole;
 import com.company.service.ProfileService;
 import com.company.util.HttpHeaderUtil;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/profile")
@@ -20,16 +22,16 @@ public class ProfileController {
     private ProfileService profileService;
 
     @PostMapping("/adm")
-    public ResponseEntity<?> create(@RequestBody ProfileDTO profileDto,
+    public ResponseEntity<String> create(@RequestBody @Valid ProfileCreateDTO profileDto,
                                     HttpServletRequest request) {
         HttpHeaderUtil.getId(request, ProfileRole.ADMIN);
-        ProfileDTO dto = profileService.create(profileDto);
-        return ResponseEntity.ok().body(dto);
+        String response = profileService.create(profileDto);
+        return ResponseEntity.ok().body(response);
     }
 
 
     @PutMapping("/adm/detail")
-    public ResponseEntity<?> update(@RequestBody ProfileDTO dto,
+    public ResponseEntity<?> update(@RequestBody @Valid ProfileDTO dto,
                                     HttpServletRequest request) {
         Integer profileId = HttpHeaderUtil.getId(request);
         profileService.update(profileId, dto);

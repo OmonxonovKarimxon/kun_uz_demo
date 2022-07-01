@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/attach")
-public class AttachController {
+public class  AttachController {
 
     @Autowired
     private AttachService attachService;

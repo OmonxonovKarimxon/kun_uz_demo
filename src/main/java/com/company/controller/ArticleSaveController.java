@@ -1,7 +1,7 @@
 package com.company.controller;
 
-import com.company.dto.ArticleSaveDTO;
-import com.company.dto.ArticleSaveResponseDTO;
+import com.company.dto.article.ArticleSaveDTO;
+import com.company.dto.article.ArticleSaveResponseDTO;
 import com.company.service.ArticleSaveService;
 import com.company.util.HttpHeaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class ArticleSaveController {
     @Autowired
     private ArticleSaveService articleSaveService;
     @PostMapping("/create")
-    public ResponseEntity<?>create(@RequestBody ArticleSaveDTO dto,
+    public ResponseEntity<?>create(@RequestBody @Valid ArticleSaveDTO dto,
                                    HttpServletRequest request){
         Integer profileId = HttpHeaderUtil.getId(request);
         articleSaveService.create(profileId,dto);

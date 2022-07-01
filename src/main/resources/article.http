@@ -1,15 +1,16 @@
 POST localhost:8080/article/adm/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYzMzEwMDAsImV4cCI6MTY1NjU0NzAwMCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiTU9ERVJBVE9SIn0.z4pAvlMHWEA40ZLbcSazLWFRbU7gpZoEC4Ah8Sq5eBs
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY0MTc4NjEsImV4cCI6MTY1NjYzMzg2MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiTU9ERVJBVE9SIn0.dwSAV1G5zQGN3r8nfBiHud6oJHcgpYP7NPdxhMWDBBQ
 
 {
-
-
+  "title": "abduVali oldirildi",
   "description": "achki",
   "regionId": 1,
   "categoryId": 1,
   "typesList":[1],
-  "tagList": ["#achki","#piyola","#eshak"]
+  "tagList": ["#achki","#piyola","#eshak"],
+  "photoId": "8a8a85a28185e841018185e921e30000",
+  "content": "qasiz brat"
 
 }
 ###
